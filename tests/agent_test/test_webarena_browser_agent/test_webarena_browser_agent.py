@@ -23,6 +23,7 @@ llm_config = {
 browser_agent_instruction_path = 'p_cot_id_actree_2s.json'
 browser_agent = WebarenaBrowserAgent(
     "browser_agent",
+    observation_type="accessibility_tree",  # choices=["accessibility_tree", "html", "image"]
     instruction_path=browser_agent_instruction_path,
     llm_config=llm_config
 )
@@ -36,9 +37,10 @@ user_proxy = autogen.ConversableAgent(
     llm_config=llm_config
 )
 
-task=[
+task = [
     "the target url is http://metis.lti.cs.cmu.edu:9999/. tell me all subreddits starting with character 'a'",
-    "Visit the URL http://43.136.237.143:40033/. And add a random product. "
+    "Visit the URL http://43.136.237.143:40033/. And add a random product. ",
+    "visit https://baidu.com and search the info about sql-lab less-1 solution"
 ]
 
 user_proxy.send(

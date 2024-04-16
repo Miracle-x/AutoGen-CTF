@@ -1,4 +1,6 @@
 import copy
+
+import markdownify
 from autogen import Agent, ConversableAgent
 from typing import Dict, Optional, Union, List, Tuple, Any, Literal
 
@@ -7,6 +9,8 @@ import logging
 import os
 import random
 import time
+
+from bs4 import BeautifulSoup
 
 from agent import (
     construct_agent,
@@ -170,6 +174,14 @@ def dump_config(args: argparse.Namespace) -> None:
         with open(config_file, "w") as f:
             json.dump(vars(args), f, indent=4)
             logger.info(f"Dump config to {config_file}")
+
+
+def HTML2Markdown(html):
+    soup = BeautifulSoup(html, "html.parser")
+    webpage_text = markdownify.MarkdownConverter().convert_soup(soup)
+    webpage_text = re.sub(r"\r\n", "\n", webpage_text)
+    webpage_text = re.sub(r"\n{2,}", "\n\n", webpage_text).strip()
+    return webpage_text
 
 
 class WebarenaBrowserAgent(ConversableAgent):
@@ -344,11 +356,16 @@ class WebarenaBrowserAgent(ConversableAgent):
                 request_reply=True
             )
             answer = chat.chat_history[-1]['context']['trajectory'][-1]['answer']
-            last_obs = chat.chat_history[-1]['context']['state_info']['observation']['text']
+            # last_obs是可访问树，暂时不需要
+            # last_obs = chat.chat_history[-1]['context']['state_info']['observation']['text']
+            last_page_url = chat.chat_history[-1]['context']['state_info']['info']['page'].url
+            last_page_content = chat.chat_history[-1]['context']['state_info']['info']['page'].content
+            last_page_markdown = HTML2Markdown(last_page_content)
             result = f"""We operate the browser according to the instructions and get the following answer:
-{answer}
-            
-The final display of the browser is as follows:
-{last_obs}
+{answer}  
+     
+The final html of the browser is as follows:
+URL: {last_page_url}
+{last_page_markdown}
             """
             return True, result
