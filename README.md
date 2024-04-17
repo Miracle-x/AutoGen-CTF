@@ -7,8 +7,8 @@ pip install -e ./package_source/webarena
 pip install --upgrade pyautogen
 ```
 
-使用下面的命令设置环境变量(windows)
-<name>需要使用自己的，不需要base_url可不设置<base_url>
+使用下面的命令设置环境变量(bash)<br/>
+<name>需要使用自己的，不需要base_url可不设置<base_url><br/>
 OAI_CONFIG_LIST里的内容需要更新成自己的配置
 
 ```
