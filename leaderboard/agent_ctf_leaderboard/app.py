@@ -83,7 +83,7 @@ def add_new_eval(
     print("Adding new eval")
 
     # Check if the combination model/org already exists and prints a warning message if yes
-    if model.lower() in set([m.lower() for m in eval_results[val_or_test]["model"]]) and organisation.lower() in set([o.lower() for l in eval_results[val_or_test]["organisation"]]):
+    if model.lower() in set([m.lower() for m in eval_results[val_or_test]["model"]]) and organisation.lower() in set([o.lower() for o in eval_results[val_or_test]["organisation"]]):
         return format_warning("This model has been already submitted.")
     
     if path_to_file is None:

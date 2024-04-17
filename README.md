@@ -8,14 +8,15 @@ pip install --upgrade pyautogen
 ```
 
 使用下面的命令设置环境变量(windows)
-<api_key>,<base_url>需要使用自己的，不需要base_url可不设置
+<name>需要使用自己的，不需要base_url可不设置<base_url>
+OAI_CONFIG_LIST里的内容需要更新成自己的配置
 
 ```
-set OPENAI_API_KEY=<api_key>
-set BASE_URL=<base_url>
+export OPENAI_API_KEY=<openai_api_key>
+export BASE_URL=<base_url>
+export HUGGINGFACE_API_KEY=<huggingface_api_key>
+export OAI_CONFIG_LIST=$(cat ./OAI_CONFIG_LIST)
 ```
-
-设置完可以执行main文件检查一下是否成功
 
 
 

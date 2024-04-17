@@ -1,0 +1,2 @@
+If you use some of the letters in the given Letter Bank to spell out the sentence "I am a penguin halfway to the moon", which of the remaining unused letters would have to be changed to spell out, "The moon is made of cheese"? Return a comma-separated alphabetized list.
+Letter Bank: {OAMFETIMPECRFSHTDNIWANEPNOFAAIYOOMGUTNAHHLNEHCME}
