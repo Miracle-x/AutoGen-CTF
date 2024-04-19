@@ -17,8 +17,9 @@ OAI_CONFIG_LIST文件里的内容需要更新成自己的配置
 ```shell
 export OPENAI_API_KEY=<openai_api_key>
 export BASE_URL=<base_url>
-export HUGGINGFACE_API_KEY=<huggingface_api_key>
 export OAI_CONFIG_LIST=$(cat ./OAI_CONFIG_LIST)
+export BING_API_KEY=<bing_api_key>
+export HUGGINGFACE_API_KEY=<huggingface_api_key>
 ```
 
 ## 单个agent测试
@@ -31,7 +32,8 @@ cd tests/agent_test/test_webarena_browser_agent
 python test_webarena_browser_agent.py
 ```
 
-其他agent类似
+其他agent类似<br/>
+(由于版本更新，rag_assistant似乎不能用了，需要重构一下)
 
 ## benchmark测试
 
