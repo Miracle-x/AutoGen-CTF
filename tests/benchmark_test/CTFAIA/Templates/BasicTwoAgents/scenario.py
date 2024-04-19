@@ -15,9 +15,9 @@ with open("prompt.txt", "rt") as fh:
     PROMPT = fh.read().strip()
 
 GAIA_SYSTEM_MESSAGE = (
-    "You are a helpful AI assistant, and today's date is "
-    + datetime.now().date().isoformat()
-    + """.
+        "You are a helpful AI assistant, and today's date is "
+        + datetime.now().date().isoformat()
+        + """.
 I will ask you a question. Answer this question using your coding and language skills.
 In the following cases, suggest python code (presented in a coding block beginning ```python) or shell script (presented in a coding block beginning ```sh) for the user to execute:
     1. When you need to collect info, use the code to output the info you need, for example, browse or search the web, download/read a file, print the content of a webpage or a file, check the operating system. After sufficient info is printed and the task is ready to be solved based on your language skill, you can solve the task by yourself.
@@ -53,14 +53,29 @@ user_proxy = autogen.UserProxyAgent(
     default_auto_reply="",
 )
 
-filename = "__FILE_NAME__".strip()
+filename = "__ANNEX__".strip()
 question = PROMPT
 
 if len(filename) > 0:
-    question = f"Consider the file '{filename}', which can be read from the current working directory. If you need to read or write it, output python code in a code block (```python) to do so. {question}"
+    question = f"Consider the folder '{filename}', which can be read from the current working directory. If you need to read or write it, output python code in a code block (```python) to do so. {question}"
 
 user_proxy.initiate_chat(assistant, message=question)
 
+# 读取过程评分细则
+chat_score = ""
+with open("chat_score.txt", "rt") as fh:
+    chat_score = eval(fh.read().strip())
+print(chat_score)
+
+# Assistant回答过程评分的问题并打印
+messages = assistant._oai_messages[user_proxy]
+for i, score_item in enumerate(chat_score):
+    question = score_item["question"]
+    question += f"\nFinish your answer with the following template: Answer{i}: [YOUR ANSWER]."
+    messages.append({"role": "user", "content": question, "name": user_proxy.name})
+    flag, response = assistant.generate_oai_reply(messages=messages)
+    messages.pop()
+    print(response)
 
 ##############################
 testbed_utils.finalize(agents=[assistant, user_proxy])

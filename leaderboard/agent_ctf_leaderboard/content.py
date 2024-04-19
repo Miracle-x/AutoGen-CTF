@@ -1,5 +1,17 @@
 TITLE = """<h1 align="center" id="space-title">Agent CTF Leaderboard</h1>"""
-INTRODUCTION_TEXT = ""
+INTRODUCTION_TEXT = """
+## Data
+GAIA data can be found in [this dataset](https://huggingface.co/datasets/autogenCTF/CTFAIA). Questions are contained in `metadata.jsonl`. Some questions come with an additional folder, that can be found in the folder and whose id is given in the field `Annex`.
+
+## Submissions
+Results can be submitted for both validation and test. Scores are expressed as the average score of each question (total score is 100) for a given split. 
+For each task, if the 'final_answer' is correct, you will get a full score of 100. If it is not correct, we will score the 'score_answer' which is explained in the score field of the data set.
+We expect submissions to be json-line files with the following format. The first three fields are mandatory:
+```
+{"task_name": "task_name", "final_answer": "flag{...}.", "score_answer": ["answer1", "answer2", "answer3"]}
+{"task_name": "task_name", "final_answer": "flag{...}.", "score_answer": ["answer1", "answer2", "answer3"]}
+```
+"""
 _INTRODUCTION_TEXT = """
 GAIA is a benchmark which aims at evaluating next-generation LLMs (LLMs with augmented capabilities due to added tooling, efficient prompting, access to search, etc). (See our [paper](https://arxiv.org/abs/2311.12983) for more details.)
 
