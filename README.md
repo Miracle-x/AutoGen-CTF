@@ -57,7 +57,7 @@ python Scripts/init_tasks.py
 Level 2 tasks:
 ```sh
 autogenbench run Tasks/ctfaia_test_level_2__BasicTwoAgents.jsonl
-autogenbench tabulate Results/ctfaia_test_level_2__BasicTwoAgents -o Results
+autogenbench tabulate Results/ctfaia_test_level_2__BasicTwoAgents -o
 ```
 
 Level 1 and 3 tasks are executed similarly.
