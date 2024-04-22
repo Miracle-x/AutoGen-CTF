@@ -1,8 +1,16 @@
-运行在python3.10环境
+阿里巴巴国际站与西北工业大学联合开发项目
+
+网络空间安全学院-NLP&大模型安全课题组-高德宏&杨黎斌&刘鹏望&胥基&赖起敬&张一涵&周梓伦
+
+[**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)
+[**[Dataset]**](https://huggingface.co/datasets/autogenCTF/CTFAIA)
+[**[CTF platform]**](http://47.251.44.45:8000)
+[**[GitHub]**](https://github.com/Miracle-x/AutoGen-CTF)
+
 
 ## 基础库安装
 
-执行以下代码安装autogen库
+运行在python3.10环境, 执行以下代码安装autogen库
 
 ```shell
 pip install --upgrade pyautogen

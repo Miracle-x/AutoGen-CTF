@@ -1,5 +1,14 @@
 TITLE = """<h1 align="center" id="space-title">Agent CTF Leaderboard</h1>"""
 INTRODUCTION_TEXT = """
+阿里巴巴国际站与西北工业大学联合开发项目
+
+网络空间安全学院-NLP&大模型安全课题组-高德宏&杨黎斌&刘鹏望&胥基&赖起敬&张一涵&周梓伦
+
+[**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)
+[**[Dataset]**](https://huggingface.co/datasets/autogenCTF/CTFAIA)
+[**[CTF platform]**](http://47.251.44.45:8000)
+[**[GitHub]**](https://github.com/Miracle-x/AutoGen-CTF)
+
 ## Data
 GAIA data can be found in [this dataset](https://huggingface.co/datasets/autogenCTF/CTFAIA). Questions are contained in `metadata.jsonl`. Some questions come with an additional folder, that can be found in the folder and whose id is given in the field `Annex`.
 
