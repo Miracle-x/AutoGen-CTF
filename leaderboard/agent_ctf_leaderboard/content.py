@@ -10,7 +10,7 @@ INTRODUCTION_TEXT = """
 [**[GitHub]**](https://github.com/Miracle-x/AutoGen-CTF)
 
 ## Data
-GAIA data can be found in [this dataset](https://huggingface.co/datasets/autogenCTF/CTFAIA). Questions are contained in `metadata.jsonl`. Some questions come with an additional folder, that can be found in the folder and whose id is given in the field `Annex`.
+CTFAIA data can be found in [this dataset](https://huggingface.co/datasets/autogenCTF/CTFAIA). Questions are contained in `metadata.jsonl`. Some questions come with an additional folder, that can be found in the folder and whose id is given in the field `Annex`.
 
 ## Submissions
 Results can be submitted for both validation and test. Scores are expressed as the average score of each question (total score is 100) for a given split. 

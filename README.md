@@ -10,10 +10,10 @@
 
 ## 基础库安装
 
-运行在python3.10环境, 执行以下代码安装autogen库
+运行在python3.10环境, 执行以下代码安装基本的依赖库
 
 ```shell
-pip install --upgrade pyautogen
+pip install -r requirements.txt
 ```
 
 ## 环境变量
