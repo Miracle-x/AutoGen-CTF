@@ -47,7 +47,6 @@ data = [
     }
 ]
 
-
 directory = f'{YEAR_VERSION}/{val_or_test}'
 os.makedirs(directory, exist_ok=True)
 
@@ -55,4 +54,7 @@ file_path = os.path.join(directory, 'metadata.jsonl')
 
 with open(file_path, 'w') as f:
     for item in data:
+        item["Final answer"] = ""
+        for i, scoreItem in enumerate(item):
+            item["score"]["answer"] = []
         f.write(json.dumps(item) + '\n')

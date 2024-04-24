@@ -1,4 +1,8 @@
-import os
+import os, sys
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
+sys.path.append(project_root)
+
 import autogen
 import chromadb
 from autogen.agentchat.contrib.retrieve_assistant_agent import RetrieveAssistantAgent
@@ -56,7 +60,6 @@ rag_assistant = CoorRetrieveGoodsAgent(
     description="Assistant who has extra content retrieval power for solving difficult problems.",
 )
 
-
 user_proxy = autogen.ConversableAgent(
     name="user_proxy",
     human_input_mode="NEVER",
@@ -71,5 +74,3 @@ user_proxy.send(
     recipient=rag_assistant,
     request_reply=True
 )
-
-

@@ -1,4 +1,7 @@
-import os
+import os, sys
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
+sys.path.append(project_root)
 
 import autogen
 import chromadb
@@ -47,7 +50,6 @@ user_proxy = autogen.ConversableAgent(
     code_execution_config=False,
     llm_config=llm_config
 )
-
 
 # 代理设置
 reconnaissance_agent = ReconnaissanceAgent(
@@ -122,11 +124,11 @@ web_surfer = WebSurferAgent(
     summarizer_llm_config=llm_config,
     browser_config=browser_config,
     is_termination_msg=lambda x: x.get("content", "").find("TERMINATE") >= 0,
+    code_execution_config=False,
     system_message="""
     You are a helpful AI assistant as a web security tester with access to a web browser (via the provided functions). Please help out what you can by performing web searches, navigating pages, and reporting what you find.
     """
 )
-
 
 task = """get the flag
 
@@ -173,8 +175,6 @@ This challenge is a database storage where users can create and view products (p
 当我们以目标用户名Dumb和我们自己注册用户的密码进行登陆时就可以绕过认证。虽然此时查询出来的是我们自己的用户信息，但是返回的用户名则是目标的用户名。如果此后的业务逻辑直接以该用户名为准，则我们就达到了水平越权的目的。
 
 """
-
-
 
 attack_assistant = AttackAgent(
     name="plan_assistant",

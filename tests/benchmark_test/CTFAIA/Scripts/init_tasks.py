@@ -10,6 +10,7 @@ import sys
 
 from huggingface_hub import snapshot_download
 
+# 路径设置
 SCRIPT_PATH = os.path.realpath(__file__)
 SCRIPT_NAME = os.path.basename(SCRIPT_PATH)
 SCRIPT_DIR = os.path.dirname(SCRIPT_PATH)
@@ -20,7 +21,11 @@ TASKS_DIR = os.path.join(SCENARIO_DIR, "Tasks")
 DOWNLOADS_DIR = os.path.join(SCENARIO_DIR, "Downloads")
 REPO_DIR = os.path.join(DOWNLOADS_DIR, "CTFAIA")
 
+# 是否使用硬编码（硬编码是我们用来提示LLM如何解决这道题的prompt，如果想严格评估LLM Agent的能力，请设置此变量为False）
 USE_HARD_PROMPT = True
+
+# 初始化该目录的数据集
+DATASET_VERSION = "20240423"
 
 
 def download_ctfaia():
@@ -82,8 +87,8 @@ def create_jsonl(name, tasks, files_dir, template):
 ###############################################################################
 def main():
     download_ctfaia()
-    ctfaia_validation_files = os.path.join(REPO_DIR, "2024", "validation")
-    ctfaia_test_files = os.path.join(REPO_DIR, "2024", "test")
+    ctfaia_validation_files = os.path.join(REPO_DIR,DATASET_VERSION,"validation")
+    ctfaia_test_files = os.path.join(REPO_DIR,DATASET_VERSION,"test")
 
     if not os.path.isdir(ctfaia_validation_files) or not os.path.isdir(ctfaia_test_files):
         sys.exit(f"Error: '{REPO_DIR}' does not appear to be a copy of the CTFAIA repository.")
@@ -122,37 +127,37 @@ def main():
     # Create the various combinations of [models] x [templates]
     for t in templates.items():
         create_jsonl(
-            f"ctfaia_validation_level_1__{t[0]}",
+            DATASET_VERSION+f"_ctfaia_validation_level_1__{t[0]}",
             ctfaia_validation_tasks[0],
             ctfaia_validation_files,
             t[1],
         )
         create_jsonl(
-            f"ctfaia_validation_level_2__{t[0]}",
+            DATASET_VERSION+f"_ctfaia_validation_level_2__{t[0]}",
             ctfaia_validation_tasks[1],
             ctfaia_validation_files,
             t[1],
         )
         create_jsonl(
-            f"ctfaia_validation_level_3__{t[0]}",
+            DATASET_VERSION+f"_ctfaia_validation_level_3__{t[0]}",
             ctfaia_validation_tasks[2],
             ctfaia_validation_files,
             t[1],
         )
         create_jsonl(
-            f"ctfaia_test_level_1__{t[0]}",
+            DATASET_VERSION+f"_ctfaia_test_level_1__{t[0]}",
             ctfaia_test_tasks[0],
             ctfaia_test_files,
             t[1],
         )
         create_jsonl(
-            f"ctfaia_test_level_2__{t[0]}",
+            DATASET_VERSION+f"_ctfaia_test_level_2__{t[0]}",
             ctfaia_test_tasks[1],
             ctfaia_test_files,
             t[1],
         )
         create_jsonl(
-            f"ctfaia_test_level_3__{t[0]}",
+            DATASET_VERSION+f"_ctfaia_test_level_3__{t[0]}",
             ctfaia_test_tasks[2],
             ctfaia_test_files,
             t[1],

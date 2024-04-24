@@ -1,7 +1,9 @@
-import os
+import os, sys
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..'))
+sys.path.append(project_root)
 
 import autogen
-
 from agents.reconnaissance_agent import ReconnaissanceAgent
 
 # 配置文件

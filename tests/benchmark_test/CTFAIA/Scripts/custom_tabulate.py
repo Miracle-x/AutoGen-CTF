@@ -248,6 +248,7 @@ def custom_tabulate(args, scorer=default_scorer, exclude_dir_names=EXCLUDE_DIR_N
         with open(os.path.join(parsed_args.runlogs, 'result.jsonl'), 'w') as file:
             for item in results_jsonl:
                 file.write(json.dumps(item) + '\n')
+        print(os.path.join(parsed_args.runlogs, 'result.jsonl'))
 
 
 def main(args):
