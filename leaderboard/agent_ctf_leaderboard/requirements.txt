@@ -1,5 +1,5 @@
-datasets==2.14.5
-gradio==4.3.0
-huggingface-hub==0.18.0
-numpy==1.24.2
-APScheduler==3.10.1
+datasets==2.19.0
+gradio==4.27.0
+huggingface-hub==0.22.2
+numpy==1.26.4
+APScheduler==3.10.4

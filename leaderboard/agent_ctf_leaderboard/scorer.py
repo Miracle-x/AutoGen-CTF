@@ -41,8 +41,8 @@ def question_scorer(
     if user_task["final_answer"] == val["Final answer"]:
         score = val["Total score"]
     else:
-        for i, item in enumerate(val["score"]):
-            if user_task["score_answer"][i] in item["answer"] and item["score"] > score:
+        for i, item in enumerate(val["score"]["question"]):
+            if user_task["score_answer"][i] in val["score"]["answer"][i] and val["score"]["score"][i] > score:
                 score = item["score"]
     return score
 

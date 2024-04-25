@@ -31,38 +31,39 @@ YEAR_VERSION = "2024"
 
 os.makedirs("scored", exist_ok=True)
 
-"""Download the CTFAIA dataset from Hugging Face Hub"""
-snapshot_download(
-    repo_id="autogenCTF/CTFAIA",
-    repo_type="dataset",
-    local_dir='./CTFAIA',
-    local_dir_use_symlinks=True,
-    token=TOKEN
+all_version = ['2024', '20240423']
+
+contact_infos = load_dataset(
+    CONTACT_DATASET,
+    token=TOKEN,
+    download_mode="force_redownload",
+    ignore_verifications=True
 )
 
-
-def get_all_folders(directory):
-    folders = []
-    for item in os.listdir(directory):
-        item_path = os.path.join(directory, item)
-        if os.path.isdir(item_path):
-            folders.append(str(item))
-    return folders
-
-
-all_version = get_all_folders('./CTFAIA')
-
+all_gold_dataset = {}
+all_gold_results = {}
 eval_results = {}
 for dataset_version in all_version:
-    eval_results[dataset_version] = load_dataset(
-        RESULTS_DATASET, dataset_version,
+    all_gold_dataset[dataset_version] = load_dataset(
+        INTERNAL_DATA_DATASET,
+        dataset_version,
         token=TOKEN,
         download_mode="force_redownload",
-        ignore_verifications=True
+        ignore_verifications=True,
+        trust_remote_code=True
     )
-
-contact_infos = load_dataset(CONTACT_DATASET, token=TOKEN, download_mode="force_redownload",
-                             ignore_verifications=True)
+    all_gold_results[dataset_version] = {
+        split: {row["task_name"]: row for row in all_gold_dataset[dataset_version][split]}
+        for split in ["test", "validation"]
+    }
+    eval_results[dataset_version] = load_dataset(
+        RESULTS_DATASET,
+        dataset_version,
+        token=TOKEN,
+        download_mode="force_redownload",
+        ignore_verifications=True,
+        trust_remote_code=True
+    )
 
 
 def get_dataframe_from_results(eval_results, split):
@@ -118,8 +119,9 @@ def add_new_eval(
     print("Adding new eval")
 
     # Check if the combination model/org already exists and prints a warning message if yes
-    if model.lower() in set([m.lower() for m in eval_results[dataset_version][val_or_test]["model"]]) and organisation.lower() in set(
-            [o.lower() for o in eval_results[dataset_version][val_or_test]["organisation"]]):
+    if model.lower() in set(
+            [m.lower() for m in eval_results[dataset_version][val_or_test]["model"]]) and organisation.lower() in set(
+        [o.lower() for o in eval_results[dataset_version][val_or_test]["organisation"]]):
         return format_warning("This model has been already submitted.")
 
     if path_to_file is None:
@@ -135,9 +137,7 @@ def add_new_eval(
     )
 
     # Gold answers
-    gold_results = {}
-    gold_dataset = load_dataset('./CTFAIA/' + dataset_version)
-    gold_results = {split: {row["task_name"]: row for row in gold_dataset[split]} for split in ["test", "validation"]}
+    gold_results = all_gold_results[dataset_version]
 
     # Compute score
     file_path = path_to_file.name
@@ -152,7 +152,6 @@ def add_new_eval(
                 except Exception:
                     return format_error(f"Line {ix} is incorrectly formatted. Please fix it and resubmit your file.")
 
-                print(task)
                 if "final_answer" not in task:
                     raise format_error(f"Line {ix} contains no final_answer key. Please fix it and resubmit your file.")
                 answer = task["final_answer"]
@@ -179,7 +178,7 @@ def add_new_eval(
                 num_questions["all"] += 1
                 num_questions[level] += 1
     for task_name, task in gold_results[val_or_test].items():
-        level = task['Level']
+        level = int(task['Level'])
         total_scores["all"] += 10
         total_scores[level] += 10
 
@@ -205,7 +204,6 @@ def add_new_eval(
         "score_level3": scores[3] / total_scores[3] if total_scores[3] else 0,
     }
     eval_results[dataset_version][val_or_test] = eval_results[dataset_version][val_or_test].add_item(eval_entry)
-    print(eval_results)
     eval_results[dataset_version].push_to_hub(RESULTS_DATASET, config_name=dataset_version, token=TOKEN)
 
     contact_info = {
@@ -226,7 +224,8 @@ def refresh():
     eval_results = {}
     for dataset_version in all_version:
         eval_results[dataset_version] = load_dataset(
-            RESULTS_DATASET, dataset_version,
+            RESULTS_DATASET,
+            dataset_version,
             token=TOKEN,
             download_mode="force_redownload",
             ignore_verifications=True
