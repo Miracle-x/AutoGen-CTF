@@ -6,15 +6,16 @@ INTRODUCTION_TEXT = """
 
 [**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)
 [**[Dataset]**](https://huggingface.co/datasets/autogenCTF/CTFAIA)
-[**[CTF platform]**](http://47.251.44.45:8000)
 [**[GitHub]**](https://github.com/Miracle-x/AutoGen-CTF)
+[**[CTF platform]**](http://47.251.44.45:8000)
+[**[Contribute to CTF platform]**](https://github.com/TedLau/Docker-AutoCTF)
 
 ## Data
 CTFAIA data can be found in [this dataset](https://huggingface.co/datasets/autogenCTF/CTFAIA). Questions are contained in `metadata.jsonl`. Some questions come with an additional folder, that can be found in the folder and whose id is given in the field `Annex`.
 
 ## Submissions
-Results can be submitted for both validation and test. Scores are expressed as the average score of each question (total score is 100) for a given split. 
-For each task, if the 'final_answer' is correct, you will get a full score of 100. If it is not correct, we will score the 'score_answer' which is explained in the score field of the data set.
+Results can be submitted for only validation. Scores are expressed as the average score of each question (total score is 100) for the validation split. 
+For each task, if the 'final_answer' is correct, you will get a full score of 100. If it is not correct, we will score the 'score_answer' which is explained in the score field of the data set. If a question in the validation set is not found in your submission, the score for that question will be 0. 
 We expect submissions to be json-line files with the following format. The first three fields are mandatory:
 ```
 {"task_name": "task_name", "final_answer": "flag{...}.", "score_answer": ["answer1", "answer2", "answer3"]}

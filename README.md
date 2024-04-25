@@ -4,8 +4,9 @@
 
 [**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)
 [**[Dataset]**](https://huggingface.co/datasets/autogenCTF/CTFAIA)
-[**[CTF platform]**](http://47.251.44.45:8000)
 [**[GitHub]**](https://github.com/Miracle-x/AutoGen-CTF)
+[**[CTF platform]**](http://47.251.44.45:8000)
+[**[Contribute to CTF platform]**](https://github.com/TedLau/Docker-AutoCTF)
 
 
 ## 基础库安装
@@ -70,22 +71,23 @@ pip install autogenbench
 cd tests/benchmark_test/CTFAIA
 ```
 
-4. 运行初始化脚本 init_tasks.py
+4. 运行初始化脚本 init_tasks.py <br/>
+   脚本中有超参 DATASET_VERSION 用于设置去跑哪个时间节点的数据集，可自行更改代码
 ```shell
 python Scripts/init_tasks.py
 ```
 
-5. 运行一个任务，此处以**使用BasicTwoAgents测试test集合level2难度**的任务为例
+5. 运行一个任务，此处以**使用BasicTwoAgents测试20240423数据集test集合level1难度**的任务为例
 
 ```shell
-autogenbench run Tasks/ctfaia_test_level_2__BasicTwoAgents.jsonl
+autogenbench run Tasks/20240423_ctfaia_test_level_1__BasicTwoAgents.jsonl
 ```
 
 6. 本地评估任务的执行情况，并将结果输出到目标任务目录下的result.json文件中，result.json可以被提交到 https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard 参与排行榜
 
 
 ```shell
-autogenbench tabulate Results/ctfaia_test_level_2__BasicTwoAgents -o
+autogenbench tabulate Results/20240423_ctfaia_test_level_1__BasicTwoAgents -o
 ```
 
 

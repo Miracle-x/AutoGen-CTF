@@ -9,7 +9,7 @@ import numpy as np
 
 from datasets import load_dataset
 from apscheduler.schedulers.background import BackgroundScheduler
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, snapshot_download
 
 # InfoStrings
 from scorer import question_scorer
@@ -27,14 +27,41 @@ RESULTS_DATASET = f"{OWNER}/CTFAIA_results_public"
 LEADERBOARD_PATH = f"{OWNER}/agent_ctf_leaderboard"
 api = HfApi()
 
-YEAR_VERSION = "default"
+YEAR_VERSION = "2024"
 
 os.makedirs("scored", exist_ok=True)
 
-# Display the results
-eval_results = load_dataset(RESULTS_DATASET, YEAR_VERSION, token=TOKEN, download_mode="force_redownload",
-                            ignore_verifications=True)
-contact_infos = load_dataset(CONTACT_DATASET, YEAR_VERSION, token=TOKEN, download_mode="force_redownload",
+"""Download the CTFAIA dataset from Hugging Face Hub"""
+snapshot_download(
+    repo_id="autogenCTF/CTFAIA",
+    repo_type="dataset",
+    local_dir='./CTFAIA',
+    local_dir_use_symlinks=True,
+    token=TOKEN
+)
+
+
+def get_all_folders(directory):
+    folders = []
+    for item in os.listdir(directory):
+        item_path = os.path.join(directory, item)
+        if os.path.isdir(item_path):
+            folders.append(str(item))
+    return folders
+
+
+all_version = get_all_folders('./CTFAIA')
+
+eval_results = {}
+for dataset_version in all_version:
+    eval_results[dataset_version] = load_dataset(
+        RESULTS_DATASET, dataset_version,
+        token=TOKEN,
+        download_mode="force_redownload",
+        ignore_verifications=True
+    )
+
+contact_infos = load_dataset(CONTACT_DATASET, token=TOKEN, download_mode="force_redownload",
                              ignore_verifications=True)
 
 
@@ -57,13 +84,12 @@ def get_dataframe_from_results(eval_results, split):
     return df
 
 
-eval_dataframe_val = get_dataframe_from_results(eval_results=eval_results, split="validation")
-eval_dataframe_test = get_dataframe_from_results(eval_results=eval_results, split="test")
-
-# Gold answers
-gold_results = {}
-gold_dataset = load_dataset(INTERNAL_DATA_DATASET, f"{YEAR_VERSION}", token=TOKEN)
-gold_results = {split: {row["task_name"]: row for row in gold_dataset[split]} for split in ["test", "validation"]}
+eval_dataframe = {}
+for dataset_version in all_version:
+    eval_dataframe[dataset_version] = get_dataframe_from_results(
+        eval_results=eval_results[dataset_version],
+        split="validation"
+    )
 
 
 def restart_space():
@@ -74,7 +100,7 @@ TYPES = ["markdown", "number", "number", "number", "number", "str", "str"]
 
 
 def add_new_eval(
-        val_or_test: str,
+        dataset_version: str,
         model: str,
         model_family: str,
         system_prompt: str,
@@ -83,6 +109,7 @@ def add_new_eval(
         organisation: str,
         mail: str,
 ):
+    val_or_test = 'validation'
     # Very basic email parsing
     _, parsed_mail = parseaddr(mail)
     if not "@" in parsed_mail:
@@ -91,8 +118,8 @@ def add_new_eval(
     print("Adding new eval")
 
     # Check if the combination model/org already exists and prints a warning message if yes
-    if model.lower() in set([m.lower() for m in eval_results[val_or_test]["model"]]) and organisation.lower() in set(
-            [o.lower() for o in eval_results[val_or_test]["organisation"]]):
+    if model.lower() in set([m.lower() for m in eval_results[dataset_version][val_or_test]["model"]]) and organisation.lower() in set(
+            [o.lower() for o in eval_results[dataset_version][val_or_test]["organisation"]]):
         return format_warning("This model has been already submitted.")
 
     if path_to_file is None:
@@ -102,10 +129,15 @@ def add_new_eval(
     api.upload_file(
         repo_id=SUBMISSION_DATASET,
         path_or_fileobj=path_to_file.name,
-        path_in_repo=f"{organisation}/{model}/{YEAR_VERSION}_{val_or_test}_raw_{datetime.datetime.today()}.jsonl",
+        path_in_repo=f"{organisation}/{model}/{dataset_version}_{val_or_test}_raw_{datetime.datetime.today()}.jsonl",
         repo_type="dataset",
         token=TOKEN
     )
+
+    # Gold answers
+    gold_results = {}
+    gold_dataset = load_dataset('./CTFAIA/' + dataset_version)
+    gold_results = {split: {row["task_name"]: row for row in gold_dataset[split]} for split in ["test", "validation"]}
 
     # Compute score
     file_path = path_to_file.name
@@ -146,14 +178,16 @@ def add_new_eval(
                 scores[level] += score
                 num_questions["all"] += 1
                 num_questions[level] += 1
-                total_scores["all"] += 10
-                total_scores[level] += 10
+    for task_name, task in gold_results[val_or_test].items():
+        level = task['Level']
+        total_scores["all"] += 10
+        total_scores[level] += 10
 
     # Save scored file
     api.upload_file(
         repo_id=SUBMISSION_DATASET,
         path_or_fileobj=f"scored/{organisation}_{model}.jsonl",
-        path_in_repo=f"{organisation}/{model}/{YEAR_VERSION}_{val_or_test}_scored_{datetime.datetime.today()}.jsonl",
+        path_in_repo=f"{organisation}/{model}/{dataset_version}_{val_or_test}_scored_{datetime.datetime.today()}.jsonl",
         repo_type="dataset",
         token=TOKEN
     )
@@ -170,9 +204,9 @@ def add_new_eval(
         "score_level2": scores[2] / total_scores[2] if total_scores[2] else 0,
         "score_level3": scores[3] / total_scores[3] if total_scores[3] else 0,
     }
-    eval_results[val_or_test] = eval_results[val_or_test].add_item(eval_entry)
+    eval_results[dataset_version][val_or_test] = eval_results[dataset_version][val_or_test].add_item(eval_entry)
     print(eval_results)
-    eval_results.push_to_hub(RESULTS_DATASET, config_name=YEAR_VERSION, token=TOKEN)
+    eval_results[dataset_version].push_to_hub(RESULTS_DATASET, config_name=dataset_version, token=TOKEN)
 
     contact_info = {
         "model": model,
@@ -189,11 +223,28 @@ def add_new_eval(
 
 
 def refresh():
-    eval_results = load_dataset(RESULTS_DATASET, YEAR_VERSION, token=TOKEN, download_mode="force_redownload",
-                                ignore_verifications=True)
-    eval_dataframe_val = get_dataframe_from_results(eval_results=eval_results, split="validation")
-    eval_dataframe_test = get_dataframe_from_results(eval_results=eval_results, split="test")
-    return eval_dataframe_val, eval_dataframe_test
+    eval_results = {}
+    for dataset_version in all_version:
+        eval_results[dataset_version] = load_dataset(
+            RESULTS_DATASET, dataset_version,
+            token=TOKEN,
+            download_mode="force_redownload",
+            ignore_verifications=True
+        )
+    leaderboard_tables = []
+    for dataset_version in all_version:
+        eval_dataframe[dataset_version] = get_dataframe_from_results(
+            eval_results=eval_results[dataset_version],
+            split="validation"
+        )
+        with gr.Tab(dataset_version):
+            leaderboard_tables.append(
+                gr.components.Dataframe(
+                    value=eval_dataframe[dataset_version], datatype=TYPES, interactive=False,
+                    column_widths=["20%"]
+                )
+            )
+    return leaderboard_tables
 
 
 def upload_file(files):
@@ -214,30 +265,26 @@ with demo:
                 elem_id="citation-button",
             )  # .style(show_copy_button=True)
 
-    with gr.Tab("Results: Test"):
-        leaderboard_table_test = gr.components.Dataframe(
-            value=eval_dataframe_test, datatype=TYPES, interactive=False,
-            column_widths=["20%"]
-        )
-    with gr.Tab("Results: Validation"):
-        leaderboard_table_val = gr.components.Dataframe(
-            value=eval_dataframe_val, datatype=TYPES, interactive=False,
-            column_widths=["20%"]
-        )
+    leaderboard_tables = []
+    for dataset_version in all_version:
+        with gr.Tab(dataset_version):
+            leaderboard_tables.append(
+                gr.components.Dataframe(
+                    value=eval_dataframe[dataset_version], datatype=TYPES, interactive=False,
+                    column_widths=["20%"]
+                )
+            )
 
     refresh_button = gr.Button("Refresh")
     refresh_button.click(
         refresh,
         inputs=[],
-        outputs=[
-            leaderboard_table_val,
-            leaderboard_table_test,
-        ],
+        outputs=leaderboard_tables,
     )
     with gr.Accordion("Submit a new model for evaluation"):
         with gr.Row():
             with gr.Column():
-                level_of_test = gr.Radio(["validation", "test"], value="test", label="Split")
+                level_of_test = gr.Radio(all_version, value=all_version[0], label="dataset_version")
                 model_name_textbox = gr.Textbox(label="Model name", value='')
                 model_family_textbox = gr.Textbox(label="Model family", value='')
                 system_prompt_textbox = gr.Textbox(label="System prompt example", value='')

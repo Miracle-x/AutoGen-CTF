@@ -22,7 +22,7 @@ DOWNLOADS_DIR = os.path.join(SCENARIO_DIR, "Downloads")
 REPO_DIR = os.path.join(DOWNLOADS_DIR, "CTFAIA")
 
 # 是否使用硬编码（硬编码是我们用来提示LLM如何解决这道题的prompt，如果想严格评估LLM Agent的能力，请设置此变量为False）
-USE_HARD_PROMPT = True
+USE_HARD_PROMPT = False
 
 # 初始化该目录的数据集
 DATASET_VERSION = "20240423"
