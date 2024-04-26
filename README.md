@@ -33,11 +33,14 @@ pip install -r requirements.txt
 OAI_CONFIG_LIST文件里的内容需要更新成自己的配置
 
 ```shell
+# 设置环境变量
+# 1 LLM相关环境变量
 export OPENAI_API_KEY=<openai_api_key>
 export BASE_URL=<base_url>
+# 2 autogen所需环境变量，OAI_CONFIG_LIST为根目录下的一个文件，替换其内容中的"<...>"，替换后执行以下代码
 export OAI_CONFIG_LIST=$(cat ./OAI_CONFIG_LIST)
+# 3 WebSurferAgent所需环境变量（可不设置，要体验此Agent相关功能时会报错）
 export BING_API_KEY=<bing_api_key>
-export HUGGINGFACE_API_KEY=<huggingface_api_key>
 ```
 
 ## 单个agent测试

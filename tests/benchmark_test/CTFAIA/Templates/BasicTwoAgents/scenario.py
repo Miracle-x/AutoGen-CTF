@@ -81,7 +81,7 @@ chat_score = ""
 with open("chat_score.txt", "rt") as fh:
     chat_score = eval(fh.read().strip())
 
-chat_score_assistant = assistant = autogen.AssistantAgent(
+chat_score_assistant = autogen.AssistantAgent(
     "assistant",
     system_message="Answer the latest questions only according to the message record, strictly follow the requirements of the latest questions, and do not add any symbols that are not related to the questions",
     llm_config=testbed_utils.default_llm_config(config_list, timeout=180),
