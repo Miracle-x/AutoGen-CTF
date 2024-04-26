@@ -46,7 +46,7 @@ def scorer(instance_dir):
         # return normalize_answer(expected_answer) == normalize_answer(final_answer)
         # 新的打分机制
         score = 0
-        if normalize_answer(expected_answer) == normalize_answer(final_answer):
+        if normalize_answer(expected_answer) and normalize_answer(expected_answer) == normalize_answer(final_answer):
             score = 10
             return score
         else:
@@ -61,7 +61,7 @@ def scorer(instance_dir):
                 m = re.search(rf"Answer{i}:(.*?)\n", console_log, re.DOTALL)
                 if m:
                     answer = m.group(1).strip()
-                    if answer in score_item['answer'] and score_item['score'] > score:
+                    if len(score_item['answer']) and answer in score_item['answer'] and score_item['score'] > score:
                         score = score_item['score']
             return score
 
