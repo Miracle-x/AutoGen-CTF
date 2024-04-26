@@ -1,5 +1,4 @@
-阿里巴巴国际站与西北工业大学联合开发项目
-
+阿里巴巴国际站与西北工业大学联合开发项目</br>
 网络空间安全学院-NLP&大模型安全课题组-高德宏&杨黎斌&刘鹏望&胥基&赖起敬&张一涵&周梓伦
 
 [**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)
@@ -7,6 +6,16 @@
 [**[GitHub]**](https://github.com/Miracle-x/AutoGen-CTF)
 [**[CTF platform]**](http://47.251.44.45:8000)
 [**[Contribute to CTF platform]**](https://github.com/TedLau/Docker-AutoCTF)
+
+
+## 项目介绍
+本项目旨在探索Agent在网络安全领域的实操能力，以CTF题目的解决程度作为检验标准。</br>
+包含一个CTF靶场[**[CTF platform]**](http://47.251.44.45:8000)，您可以点击[**[Contribute to CTF platform]**](https://github.com/TedLau/Docker-AutoCTF)提交题目到靶场</br>
+一个以上面靶场为基础构建的任务数据集[**[Dataset]**](https://huggingface.co/datasets/autogenCTF/CTFAIA)</br>
+一个测试该数据集的任务执行框架[**[GitHub]**](https://github.com/Miracle-x/AutoGen-CTF)</br>
+一个供所有人参与，展示自己构建的Agent框架在此数据集验证集上得分的排行榜[**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)</br>
+
+**你可以根据下面的教程进行项目的初体验**
 
 
 ## 基础库安装
