@@ -1,4 +1,3 @@
-markdownify==0.12.1
-beautifulsoup4==4.12.3
 pyautogen==0.2.26
-autogenbench==0.0.3
+pyautogen[websurfer]
+autogenbench>=0.0.2a3
