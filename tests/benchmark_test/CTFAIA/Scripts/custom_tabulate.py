@@ -15,7 +15,7 @@ def normalize_answer(a):
     # Replace multiple spaces with one space
     # Remove trailing punctuation
     # return re.sub(r"[\.\!\?]+$", "", re.sub(r"\s+", " ", a.strip().lower()))
-    return a
+    return a.strip().lower()
 
 
 def scorer(instance_dir):
@@ -46,6 +46,7 @@ def scorer(instance_dir):
         # return normalize_answer(expected_answer) == normalize_answer(final_answer)
         # 新的打分机制
         score = 0
+        print(normalize_answer(final_answer), normalize_answer(expected_answer))
         if normalize_answer(expected_answer) and normalize_answer(expected_answer) == normalize_answer(final_answer):
             score = 10
             return score
@@ -61,7 +62,9 @@ def scorer(instance_dir):
                 m = re.search(rf"Answer{i}:(.*?)\n", console_log, re.DOTALL)
                 if m:
                     answer = m.group(1).strip()
-                    if len(score_item['answer']) and answer in score_item['answer'] and score_item['score'] > score:
+                    score_item['answer'] = [normalize_answer(item) for item in score_item['answer']]
+                    print(answer, score_item['answer'])
+                    if len(score_item['answer']) and normalize_answer(answer) in score_item['answer'] and score_item['score'] > score:
                         score = score_item['score']
             return score
 
