@@ -16,7 +16,7 @@ with open("prompt.txt", "rt") as fh:
 
 filename = "__ANNEX__".strip()
 
-# 询问的问题
+# Questions to ask
 question = PROMPT
 
 if len(filename) > 0:
@@ -24,10 +24,10 @@ if len(filename) > 0:
 
 config_list = autogen.config_list_from_json("OAI_CONFIG_LIST")
 
-#######################################################
-# 定义框架并开始执行任务，需要将消息记录打印出来
-# question为输入
-#######################################################
+###################################################################################################################################
+# To define the framework and start executing the task, you need to print out the message record
+# question is the input
+###################################################################################################################################
 
 GAIA_SYSTEM_MESSAGE = (
         "You are a helpful AI assistant, and today's date is "
@@ -68,13 +68,12 @@ user_proxy = autogen.UserProxyAgent(
 
 user_proxy.initiate_chat(assistant, message=question)
 
-# 将历史消息保存至chat_messages
 chat_messages = assistant._oai_messages[user_proxy]
 
-#######################################################
-# 执行结束
-# chat_messages为输出
-#######################################################
+###################################################################################################################################
+# End of execution
+# chat_messages is the output
+###################################################################################################################################
 
 
 chat_score = ""
