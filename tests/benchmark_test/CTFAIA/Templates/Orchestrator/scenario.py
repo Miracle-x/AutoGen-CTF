@@ -201,10 +201,9 @@ except:
 # print()
 # print(response_preparer(maestro.orchestrated_messages))
 
-# 将历史消息保存至chat_messages
 chat_messages = maestro.orchestrated_messages
 
-# 回答最终问题
+# answer the final question
 chat_score_assistant = assistant = autogen.AssistantAgent(
     "assistant",
     system_message="Answer the latest questions only according to the message record, strictly follow the requirements of the latest questions, and do not add any symbols that are not related to the questions",
@@ -230,10 +229,10 @@ flag, response = chat_score_assistant.generate_oai_reply(messages=chat_messages)
 chat_messages.pop()
 print(response)
 
-#######################################################
-# 执行结束
-# chat_messages为输出
-#######################################################
+###################################################################################################################################
+# End of execution
+# chat_messages is the output
+###################################################################################################################################
 
 
 chat_score = ""
