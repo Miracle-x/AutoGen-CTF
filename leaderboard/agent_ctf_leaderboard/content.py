@@ -2,7 +2,7 @@ TITLE = """<h1 align="center" id="space-title">Agent CTF Leaderboard</h1>"""
 INTRODUCTION_TEXT = """
 阿里巴巴国际站与西北工业大学联合开发项目
 
-网络空间安全学院-NLP&大模型安全课题组-高德宏&杨黎斌&刘鹏望&胥基&赖起敬&张一涵&周梓伦
+网络空间安全学院-NLP&大模型安全课题组-高德宏&杨黎斌&刘鹏望&胥基&赖起敬&张一涵&周梓伦&张诗扬&刘苗苗&王义翔
 
 [**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)
 [**[Dataset]**](https://huggingface.co/datasets/autogenCTF/CTFAIA)
