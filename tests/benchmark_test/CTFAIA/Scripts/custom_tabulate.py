@@ -34,7 +34,7 @@ def scorer(instance_dir):
 
     console_log = ""
     print(console_log_file)
-    with open(console_log_file, "rt", encoding="utf-8") as fh:
+    with open(console_log_file, "rt") as fh:
         console_log = fh.read()
 
         final_answer = ""
@@ -227,7 +227,7 @@ def custom_tabulate(args, scorer=default_scorer, exclude_dir_names=EXCLUDE_DIR_N
 
             console_log = ""
             print(console_log_file)
-            with open(console_log_file, "rt", encoding="utf-8") as fh:
+            with open(console_log_file, "rt") as fh:
                 console_log = fh.read()
 
                 m = re.search(r"FINAL ANSWER:(.*?)\n", console_log, re.DOTALL)
