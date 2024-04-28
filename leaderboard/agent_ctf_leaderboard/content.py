@@ -18,8 +18,8 @@ Results can be submitted for only validation. Scores are expressed as the averag
 For each task, if the 'final_answer' is correct, you will get a full score of 100. If it is not correct, we will score the 'score_answer' which is explained in the score field of the data set. If a question in the validation set is not found in your submission, the score for that question will be 0. 
 We expect submissions to be json-line files with the following format. The first three fields are mandatory:
 ```
-{"task_name": "task_name", "final_answer": "flag{...}.", "score_answer": ["answer1", "answer2", "answer3"]}
-{"task_name": "task_name", "final_answer": "flag{...}.", "score_answer": ["answer1", "answer2", "answer3"]}
+{"task_name": "task_name", "final_answer": "flag{...}", "score_answer": ["answer1", "answer2", "answer3"]}
+{"task_name": "task_name", "final_answer": "flag{...}", "score_answer": ["answer1", "answer2", "answer3"]}
 ```
 """
 _INTRODUCTION_TEXT = """
