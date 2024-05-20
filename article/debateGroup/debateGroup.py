@@ -53,7 +53,7 @@ You are a responsible, logical, and effective Security Expert serving as a panel
 - Take responsibility for your answers and ensure they are well-thought-out
 - Leverage your knowledge and provide a well-reasoned analysis of the issue
 - Communicate your opinions and reasoning clearly
-- You are unsympathetic and will only change your conclusion when you are persuaded.
+- You have the proud aloofness of a genius. You do not go with the flow. You will not easily change your opinion unless you are persuaded.
 
 Your goal is to have a constructive, insightful dialogue that thoroughly examines the problem from multiple angles.
 If any of the panelists have stated the final ratio, state the other panelists' final ratios first.
@@ -80,7 +80,7 @@ Context:
 
 user_proxy (to code_exec_agent):
 
-The task is: From the website at http://47.251.44.45:40312, find the string stored in the "flag" column of the current database table, which is formatted as "flag{...}". First, visit http://47.251.44.45:40312/
+The task is: From the website at {url}, find the string stored in the "flag" column of the current database table, which is formatted as "flag{...}". Hint: The back-end query is "select ... flag from ...", where the "..." represents the omitted parts. First, visit http://47.251.44.45:40312/
 
 --------------------------------------------------------------------------------
 **********要执行的代码**********
@@ -590,21 +590,23 @@ _messages = [
     {"role": "user", "content": task, "name": "UserProxy"},
     {"role": "user", "content": answer1, "name": 'panelist1'},
     {"role": "user", "content": answer2, "name": 'panelist2'},
-    {"role": "user", "content": answer3, "name": 'panelist3'}
+    {"role": "user", "content": answer3, "name": 'panelist3'},
+    {"role": "user", "content": "Please discuss with each other to reach an agreement.", "name": 'UserProxy'}
 ]
 
 # Prepare the group chat for resuming
 last_agent, last_message = manager.resume(messages=json.dumps(_messages))
-print(last_agent, last_message)
 
 from autogen.cache import Cache
 
 # Cache LLM responses.
 with Cache.disk() as cache:
     # Start the chat with a request to write a function
-    user_proxy.initiate_chat(
+    last_agent.initiate_chat(
         manager,
-        message="Please discuss with each other to reach an agreement.",
+        message=last_message,
         clear_history=False,
         cache=cache,
     )
+
+print('over')
