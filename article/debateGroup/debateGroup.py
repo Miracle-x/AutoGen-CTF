@@ -65,8 +65,8 @@ We have such a question:
 
 {
     "type": "Fill in the blanks",
-    "question": "What is the flag?__",
-    "answer": "flag{NLP_Security_Test}",
+    "question": "What is the parameter of the target website post request?__",
+    "answer": "query",
     "expertise": unknown,
     "reasoning": unknown,
     "comprehension": unknown,
