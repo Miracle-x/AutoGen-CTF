@@ -120,6 +120,14 @@ dataset = {
         "reasoning": 0.3,
         "comprehension": 0.15,
         "score": 9,
+    }, {
+        "type": "Fill in the blanks",
+        "question": "What is the flag?__",
+        "answer": "flag{NLP_Security_Test}",
+        "expertise": 0.4,
+        "reasoning": 0.3,
+        "comprehension": 0.3,
+        "score": 10,
     }],
     "Annotator Metadata": {
         "Reference URL": "https://blog.csdn.net/xhy18634297976/article/details/122515412",
