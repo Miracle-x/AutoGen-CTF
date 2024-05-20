@@ -1,5 +1,5 @@
 阿里巴巴国际站与西北工业大学联合开发项目</br>
-网络空间安全学院-NLP&大模型安全课题组-高德宏&杨黎斌&刘鹏望&胥基&赖起敬&张一涵&周梓伦
+网络空间安全学院-NLP&大模型安全课题组-高德宏&杨黎斌&刘鹏望&胥基&赖起敬&张一涵&周梓伦&张诗扬&刘苗苗&王义翔
 
 [**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)
 [**[Dataset]**](https://huggingface.co/datasets/autogenCTF/CTFAIA)
@@ -15,12 +15,22 @@
 一个测试该数据集的任务执行框架[**[GitHub]**](https://github.com/Miracle-x/AutoGen-CTF)</br>
 一个供所有人参与，展示自己构建的Agent框架在此数据集验证集上得分的排行榜[**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard)</br>
 
+
 **你可以根据下面的教程进行项目的初体验**
 
 
+# 快速体验
+
+## 下载项目
+
+```shell
+git clone https://github.com/Miracle-x/AutoGen-CTF.git
+cd AutoGen-CTF
+```
+
 ## 基础库安装
 
-运行在python3.10环境, 执行以下代码安装基本的依赖库
+运行在python3.10环境（可使用conda新建环境避免未知冲突）, 执行以下代码安装基本的依赖库
 
 ```shell
 pip install -r requirements.txt
@@ -29,15 +39,15 @@ pip install -r requirements.txt
 ## 环境变量
 
 使用下面的命令设置环境变量(bash)<br/>
-其中"<...>"需要更换成自己的，不需要base_url可不设置<base_url><br/>
-OAI_CONFIG_LIST文件里的内容需要更新成自己的配置
+其中"<...>"需要更换成自己的。如果是使用官网的openai_api_key则不需要设置<base_url><br/>
+OAI_CONFIG_LIST文件里的内容需要更新成自己的配置。如果是使用官网的openai_api_key，请删掉<base_url>那几行
 
 ```shell
 # 设置环境变量
-# 1 LLM相关环境变量
+# 1 LLM相关环境变量（如果是使用官网的openai_api_key则不需要设置<base_url>）
 export OPENAI_API_KEY=<openai_api_key>
 export BASE_URL=<base_url>
-# 2 autogen所需环境变量，OAI_CONFIG_LIST为根目录下的一个文件，替换其内容中的"<...>"，替换后执行以下代码
+# 2 autogen所需环境变量，OAI_CONFIG_LIST为根目录下的一个文件，替换其内容中的"<...>"，替换后执行以下代码（如果是使用官网的openai_api_key，请删掉<base_url>那几行）
 export OAI_CONFIG_LIST=$(cat ./OAI_CONFIG_LIST)
 # 3 WebSurferAgent所需环境变量（可不设置，要体验此Agent相关功能时会报错）
 export BING_API_KEY=<bing_api_key>
@@ -80,19 +90,19 @@ python test_code_exec_agent.py
    pip install autogenbench==0.0.2a3
    ```
 
-2. **如果是Windows系统，请确保docker已安装**（linux系统可跳过这一步），安装参考 https://www.docker.com/products/docker-desktop/ 
+2. **如果是Windows系统，请确保"docker+WSL环境"已安装**（linux系统可跳过这一步），安装参考 https://www.docker.com/products/docker-desktop/ 
 
 3. 进入要测试的数据集文件夹
 
-```shell
-cd tests/benchmark_test/CTFAIA
-```
+   ```shell
+   cd tests/benchmark_test/CTFAIA
+   ```
 
 4. 运行初始化脚本 init_tasks.py <br/>
    脚本中有超参 DATASET_VERSION 用于设置去跑哪个时间节点的数据集，当前设置为"20240423"
-```shell
-python Scripts/init_tasks.py
-```
+   ```shell
+   python Scripts/init_tasks.py
+   ```
 
 5. 运行一个任务，此处以**使用BasicTwoAgents测试20240423数据集test集合level1难度**的任务为例
 
@@ -109,9 +119,9 @@ python Scripts/init_tasks.py
 result.json可以被提交到 [**[LeaderBoard]**](https://huggingface.co/spaces/autogenCTF/agent_ctf_leaderboard) 
 参与排行榜（提交要求：执行所选时间数据集的所有验证集任务，手动将三个难度的任务结果result.jsonl放在同一个jsonl文件中提交）
 
-```shell
-autogenbench tabulate Results/20240423_ctfaia_test_level_1__BasicTwoAgents -o
-```
+   ```shell
+   autogenbench tabulate Results/20240423_ctfaia_test_level_1__BasicTwoAgents -o
+   ```
 
 
 
