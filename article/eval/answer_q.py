@@ -45,7 +45,7 @@ We have such a question:
     "answer": "",
 }
 
-Reading the following Context and answer the question. Just replay the answer. Don't add anything else.
+Reading the following Context and answer the question. Just reply the answer. Don't add anything else.
 
 Context:
 
