@@ -44,6 +44,7 @@ user_proxy = UserProxyAgent(
     code_execution_config=False,
     human_input_mode="TERMINATE",
     is_termination_msg=lambda x: "TERMINATE" in x.get("content"),
+    default_auto_reply="continue"
 )
 
 panelist_sys_msg = """
@@ -72,9 +73,8 @@ We have such a question:
     "comprehension": unknown,
 }
 
-The panelists must find the answer according to the following Context and cannot fabricate the answer. 
-In the following Context, our answer is unquestionably correct. Don't doubt this.
-Tell me the importance ratio (quantified mathematically) of this question to the three abilities of expertise, reasoning and comprehension of the large language model, and the reason for this judgment.
+Tell me the importance ratio (quantified mathematically) of solving this problem to the expertise, reasoning and comprehension of the three abilities of the LLM, and the reasons for making this judgment.
+The following Context is a task execution log, which contains the process to solve the above problems.
 
 Context:
 
@@ -564,8 +564,12 @@ panelist3 = AssistantAgent(
 _init_messages = [{"role": "user", "content": task, "name": "manager"}]
 
 # Establish the Group Chat and disallow a speaker being selected consecutively
-groupchat = GroupChat(agents=[panelist1, panelist2, panelist3, user_proxy], messages=[], max_round=10,
-                      allow_repeat_speaker=False)
+groupchat = GroupChat(agents=[panelist1, panelist2, panelist3, user_proxy],
+                      messages=[],
+                      max_round=10,
+                      allow_repeat_speaker=False,
+                      speaker_selection_method='round_robin'
+                      )
 
 # Manages the group of multiple agents
 manager = GroupChatManager(
@@ -591,7 +595,7 @@ _messages = [
     {"role": "user", "content": answer1, "name": 'panelist1'},
     {"role": "user", "content": answer2, "name": 'panelist2'},
     {"role": "user", "content": answer3, "name": 'panelist3'},
-    {"role": "user", "content": "Please discuss with each other to reach an agreement.", "name": 'UserProxy'}
+    {"role": "user", "content": "Give me the results of your thinking.", "name": 'UserProxy'}
 ]
 
 # Prepare the group chat for resuming
