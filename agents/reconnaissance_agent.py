@@ -21,7 +21,7 @@ class ReconnaissanceAgent(ConversableAgent):
     DEFAULT_PROMPT = (
         """You are a helpful assistant."""
     )
-    DEFAULT_DESCRIPTION = """A helpful assistant to reconnaissance target url. Return the source code of the relevant pages of the same station"""
+    DEFAULT_DESCRIPTION = """A TOOL to reconnaissance target url. Return the source code of the relevant pages of the same station. The same url will give exactly the same answer to avoid repeating the url before investigation."""
 
     def __init__(
             self,
@@ -82,8 +82,10 @@ class ReconnaissanceAgent(ConversableAgent):
             print('*' * 10 + '目标初始页面' + '*' * 10)
             print(start_url_response)
 
-            # 分析页面是否有更多的相关页面
-            analyse_more_page_prompt = f"""Extract all current site urls in the current page as a list. Note that the url must be complete.
+            # 分析页面是否有更多的相关页面 提取对当前任务有帮助的url
+            analyse_more_page_prompt = f"""Extract urls that is helpful for the current request in the current page as a list. Note that the url must be complete.
+        
+Current request: {messages[-1].get('content')}
             
 Current Page:
 url:{start_url}
