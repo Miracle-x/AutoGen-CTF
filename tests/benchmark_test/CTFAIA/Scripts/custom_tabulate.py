@@ -18,6 +18,18 @@ def normalize_answer(a):
     return a.strip().lower()
 
 
+def exact_match(answer, ground_truth):
+    return normalize_answer(answer) == normalize_answer(ground_truth)
+
+
+def keyword_match(answer, ground_truth):
+    return normalize_answer(ground_truth) in normalize_answer(answer)
+
+
+def format_write_mode_a(content):
+    return '\n' + str(content)
+
+
 def scorer(instance_dir):
     # Read the expected answer
     expected_answer_file = os.path.join(instance_dir, "expected_answer.txt")
@@ -34,7 +46,7 @@ def scorer(instance_dir):
 
     console_log = ""
     print(console_log_file)
-    with open(console_log_file, "rt") as fh:
+    with open(console_log_file, "rt", encoding='utf-8') as fh:
         console_log = fh.read()
 
         final_answer = ""
@@ -42,31 +54,59 @@ def scorer(instance_dir):
         if m:
             final_answer = m.group(1).strip()
 
-        # # Return true if they are equal after normalization
-        # return normalize_answer(expected_answer) == normalize_answer(final_answer)
-        # 新的打分机制
-        score = 0
-        print(normalize_answer(final_answer), normalize_answer(expected_answer))
-        if normalize_answer(expected_answer) and normalize_answer(expected_answer) == normalize_answer(final_answer):
-            score = 10
-            return score
-        else:
+        # 打分机制
+        level = 0
+        expertise = 0
+        reasoning = 0
+        comprehension = 0
+        # 记录得分情况
+        chat_score_log_file = os.path.join(instance_dir, "chat_score_log.txt")
+        with open(chat_score_log_file, 'a') as score_log:
             # 读取chat_score
             chat_score_file = os.path.join(instance_dir, "chat_score.txt")
             if not os.path.isfile(chat_score_file):
                 return None
             chat_score = None
             with open(chat_score_file, "rt") as fh:
-                chat_score = eval(fh.read().strip())
+                content = fh.read().strip()
+                print(content)
+                chat_score = eval(content)
             for i, score_item in enumerate(chat_score):
                 m = re.search(rf"Answer{i}:(.*?)\n", console_log, re.DOTALL)
                 if m:
                     answer = m.group(1).strip()
-                    score_item['answer'] = [normalize_answer(item) for item in score_item['answer']]
-                    print(answer, score_item['answer'])
-                    if len(score_item['answer']) and normalize_answer(answer) in score_item['answer'] and score_item['score'] > score:
-                        score = score_item['score']
-            return score
+                    answer_true = False
+                    if score_item['type'] == 'Multiple choice':
+                        if exact_match(answer, score_item['answer']):
+                            answer_true = True
+                    elif score_item['type'] == 'Fill in the blanks':
+                        if keyword_match(answer, score_item['answer']):
+                            answer_true = True
+                    elif score_item['type'] == 'short answer questions':
+                        for ground_truth in score_item['answer']:
+                            if keyword_match(answer, ground_truth):
+                                answer_true = True
+                                break
+                    print(answer, score_item['answer'], answer_true)
+                    score_log.write(format_write_mode_a([answer, score_item['answer'], answer_true]))
+                    # 加分
+                    if answer_true:
+                        expertise += score_item['expertise']
+                        reasoning += score_item['reasoning']
+                        comprehension += score_item['comprehension']
+                        if score_item['score'] > level:
+                            level = score_item['score']
+                        print([level, expertise, reasoning, comprehension])
+                        score_log.write(format_write_mode_a([level, expertise, reasoning, comprehension]))
+                    score_log.write('\n')
+            # final_answer正确 则满分，但是能力分不加了
+            if expected_answer and exact_match(final_answer, expected_answer):
+                score_log.write(
+                    format_write_mode_a([final_answer, expected_answer, exact_match(final_answer, expected_answer)]))
+                score_log.write(format_write_mode_a([10, 1, 1, 1]))
+                score_log.write('\n')
+                level = 10
+            return [level, expertise, reasoning, comprehension]
 
 
 def custom_tabulate(args, scorer=default_scorer, exclude_dir_names=EXCLUDE_DIR_NAMES):
@@ -227,7 +267,7 @@ def custom_tabulate(args, scorer=default_scorer, exclude_dir_names=EXCLUDE_DIR_N
 
             console_log = ""
             print(console_log_file)
-            with open(console_log_file, "rt") as fh:
+            with open(console_log_file, "rt", encoding='utf-8') as fh:
                 console_log = fh.read()
 
                 m = re.search(r"FINAL ANSWER:(.*?)\n", console_log, re.DOTALL)
