@@ -37,10 +37,10 @@ config_list = [
     },
 ]
 llm_config = {
-    # "request_timeout": 600,
+    "timeout": 1000,
     "seed": 46,
     "config_list": config_list,
-    "temperature": 0
+    "temperature": 0,
 }
 print(llm_config)
 code_exec_agent = CodeExecAgent(

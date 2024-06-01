@@ -31,7 +31,10 @@ def filter_html(html_source):
 
     # 遍历文档树并过滤标签
     for tag in soup.find_all(True):
-        if tag.name not in keep_tags:
+        if tag.name == 'style':
+            # 移除 style 标签及其内容
+            tag.decompose()
+        elif tag.name not in keep_tags:
             # 替换标签但保留其内部内容
             tag.unwrap()
 
@@ -95,7 +98,7 @@ class ReconnaissanceAgent(ConversableAgent):
             if error_times > self.max_turns:
                 return False, None
             # 提取初始化的url
-            extract_url_prompt = """Only extract the target URL and return it. DO NOT OUTPUT ANYTHING OTHER THAN THE URL. Understand current request before answering."""
+            extract_url_prompt = """Only extract the target URL and return it. DO NOT OUTPUT ANYTHING OTHER THAN THE URL. Don't explain and illustrate."""
             _messages.append({"role": "user", "content": extract_url_prompt, "name": sender.name})
             response = self.client.create(
                 messages=_messages,
@@ -109,7 +112,8 @@ class ReconnaissanceAgent(ConversableAgent):
             # 访问初始化url页面
             try:
                 start_url_response = requests.get(start_url)
-                start_url_response = delete_empty_lines(start_url_response.text)
+                start_url_response = 'Header:\n' + str(start_url_response.headers) + '\n\nContent:\n' + start_url_response.text
+                start_url_response = delete_empty_lines(start_url_response)
             except:
                 continue
             print('*' * 10 + '目标初始页面' + '*' * 10)
@@ -117,6 +121,7 @@ class ReconnaissanceAgent(ConversableAgent):
 
             # 分析页面是否有更多的相关页面 提取对当前任务有帮助的url
             analyse_more_page_prompt = f"""Extract urls that is helpful for the current request in the current page as a list. Note that the url must be complete.
+Remember never to extract the URL of Library Files, such as jquery-3.1.1.min.js, but extract administrator custom files should be extracted, such as main.js
         
 Current request: {messages[-1].get('content')}
             
@@ -154,7 +159,8 @@ Please output an answer in pure JSON format according to the following schema. T
                     if not url:
                         continue
                     tmp_response = requests.get(url)
-                    tmp_response = delete_empty_lines(tmp_response.text)
+                    tmp_response = 'Header:\n' + str(tmp_response.headers) + '\n\nContent:\n' + tmp_response.text
+                    tmp_response = delete_empty_lines(tmp_response)
                     relate_pages[url] = tmp_response
             except:
                 continue

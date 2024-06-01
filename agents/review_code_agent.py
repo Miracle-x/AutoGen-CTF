@@ -15,6 +15,11 @@ def delete_empty_lines(text):
     return '\n'.join(line for line in text.splitlines() if line.strip())
 
 
+expertise = """
+
+"""
+
+
 class ReviewCodeAgent(ConversableAgent):
     """
         Args:
@@ -77,7 +82,7 @@ class ReviewCodeAgent(ConversableAgent):
                 extract_target_prompt = f"""Consider the following important questions:
 
                 - Does the code you want to review come from github? What is the url detail?
-                - Whether the code you want to review exists in the history message? Extract the complete code detail if yse.
+                - Whether the code you want to review exists in the history message? Extract the complete code detail if yes.
 
                 Please output an answer in pure JSON format according to the following schema. The JSON object must be parsable as-is. DO NOT OUTPUT ANYTHING OTHER THAN JSON, DO NOT USE CODE BLOCK, AND DO NOT DEVIATE FROM THIS SCHEMA:
 
