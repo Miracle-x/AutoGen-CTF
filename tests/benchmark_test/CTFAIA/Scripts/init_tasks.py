@@ -86,7 +86,7 @@ def create_jsonl(name, tasks, files_dir, template):
 
 ###############################################################################
 def main():
-    download_ctfaia()
+    # download_ctfaia()
     ctfaia_validation_files = os.path.join(REPO_DIR,DATASET_VERSION,"validation")
     ctfaia_test_files = os.path.join(REPO_DIR,DATASET_VERSION,"test")
 

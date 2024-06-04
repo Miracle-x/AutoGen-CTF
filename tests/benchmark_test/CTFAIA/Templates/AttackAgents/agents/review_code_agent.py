@@ -85,7 +85,7 @@ class ReviewCodeAgent(ConversableAgent):
                 extract_target_prompt = f"""Consider the following important questions:
 
                 - Does the code you want to review come from github? What is the url detail?
-                - Whether the code you want to review exists in the history message? Extract the complete code detail if yse.
+                - Whether the code you want to review exists in the history message? Extract the complete code detail if yes.
 
                 Please output an answer in pure JSON format according to the following schema. The JSON object must be parsable as-is. DO NOT OUTPUT ANYTHING OTHER THAN JSON, DO NOT USE CODE BLOCK, AND DO NOT DEVIATE FROM THIS SCHEMA:
 
@@ -146,7 +146,7 @@ class ReviewCodeAgent(ConversableAgent):
                     _messages.append({"role": "user", "content": extracted_response, "name": 'Programmer'})
                     flag, code = self.generate_code_execution_reply(messages=_messages,
                                                                     config=self._code_execution_config)
-                    print(code)
+                    # print(code)
                     _messages.append({"role": "user", "content": code, "name": 'exec_result'})
                     # 检查代码是否有误
                     data = {}
@@ -184,7 +184,9 @@ class ReviewCodeAgent(ConversableAgent):
                     else:
                         _messages.pop()
                         _messages.pop()
-                return True, "Can't get the github code."
+                        break
+                if request_github >= 3:
+                    return True, "Can't get the github code."
             elif source_res['source']['answer'] == 'history':
                 code = source_res['source']['detail']
             print(code)

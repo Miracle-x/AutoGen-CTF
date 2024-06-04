@@ -31,7 +31,7 @@ YEAR_VERSION = "2024"
 
 os.makedirs("scored", exist_ok=True)
 
-all_version = ['2024', '20240423']
+all_version = ['20240423']
 
 contact_infos = load_dataset(
     CONTACT_DATASET,
