@@ -22,6 +22,7 @@ expertise = """
 5.When base64 decrypts a string, you can decrypt it three times and check whether the results of the three times are consistent, preventing an error when decrypting a string.
 6.When you encounter a query similar to '$p3 === file_get_contents($p4) ', you can assign the p3 variable to 'php://input', assign a string to the variable p4, and post a string of the same value as the p4 assignment at the same time on the request, and pass it to p3 using a pseudo-protocol. To get around the comparison.
 7.In SQL, semicolons are used to indicate the end of an sql statement. The end statement is followed by the next statement, which results in stack injection. Production scenario: mysql_multi_query() supports the execution of multiple sql statements at the same time.
+8.If the response to different requests is the same or no response, then directly from the error injection, Boolean injection and delayed injection three methods to try,Otherwise, try joint injection or Stacked Queries Injection first.
 """
 
 class ReviewCodeAgent(ConversableAgent):
