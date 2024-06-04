@@ -1,0 +1,39 @@
+
+['as GET parameters', 'POST', False]
+
+['Array assignment', 'Array assignment', True]
+[2, 0.2, 0.18, 0.25]
+
+['file_get_contents()', 'file_get_contents()', True]
+[4, 0.48000000000000004, 0.3, 0.37]
+
+['POST', 'POST', True]
+[5, 0.64, 0.54, 0.62]
+
+['NSCTF{7aca63dd-6asd-3e4b-adfc-8b9e3911e1b6}', 'NSCTF{ab4ea15bd59038a6c7b823ebeee4b8ba}', False]
+
+['as GET parameters', 'POST', False]
+
+['Array assignment', 'Array assignment', True]
+[2, 0.2, 0.18, 0.25]
+
+['file_get_contents()', 'file_get_contents()', True]
+[4, 0.48000000000000004, 0.3, 0.37]
+
+['POST', 'POST', True]
+[5, 0.64, 0.54, 0.62]
+
+['NSCTF{7aca63dd-6asd-3e4b-adfc-8b9e3911e1b6}', 'NSCTF{ab4ea15bd59038a6c7b823ebeee4b8ba}', False]
+
+['as GET parameters', 'POST', False]
+
+['Array assignment', 'Array assignment', True]
+[2, 0.2, 0.18, 0.25]
+
+['file_get_contents()', 'file_get_contents()', True]
+[4, 0.48000000000000004, 0.3, 0.37]
+
+['POST', 'POST', True]
+[5, 0.64, 0.54, 0.62]
+
+['NSCTF{7aca63dd-6asd-3e4b-adfc-8b9e3911e1b6}', 'NSCTF{ab4ea15bd59038a6c7b823ebeee4b8ba}', False]

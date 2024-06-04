@@ -1,0 +1,5 @@
+
+['GET', 'GET', True]
+[1, 0.5, 0.44, 0.67]
+
+['nsctf{expl0it_serializati0n_pseuD0_rand0m_}', 'nsctf{taiiiiiii1_li_hai_le}', False]

@@ -1,0 +1,6 @@
+
+['ZmxhZ3swZWZhOTk0ODRiZjVlZGQ3YzE5OGU4M2FjYjQ5ZWJkMn0=', 'ZmxhZ3swZWZhOTk0ODRiZjVlZGQ3YzE5OGU4M2FjYjQ5ZWJkMn0=', True]
+[1, 0.43, 0.5, 0.57]
+
+['flag{0efa99484bf5edd7c198e83acb49ebd2}', 'flag{0efa99484bf5edd7c198e83acb49ebd2}', True]
+[10, 1.0, 1.0, 1.0]

@@ -1,0 +1,5 @@
+
+['login.php', ['config.php', 'index.php', 'login.php', 'register.php'], False]
+
+['flag', ['flag'], True]
+[7, 0.43, 0.75, 0.2]

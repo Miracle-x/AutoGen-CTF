@@ -1,0 +1,4 @@
+
+['/api/serialize', ['/b4by/coffee'], False]
+
+['PyBytecodeLoader', ['defineClass'], False]

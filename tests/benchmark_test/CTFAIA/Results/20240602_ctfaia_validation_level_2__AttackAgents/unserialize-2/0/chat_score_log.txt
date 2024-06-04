@@ -1,0 +1,14 @@
+
+['__sleep', '__sleep', True]
+[2, 0.22, 0.19, 0.14]
+
+['__destruct', '__destruct', True]
+[4, 0.44, 0.38, 0.28]
+
+['__wakeup', '__wakeup', True]
+[6, 0.66, 0.5700000000000001, 0.42000000000000004]
+
+['`un`', 'un', True]
+[9, 0.81, 0.8, 0.78]
+
+['[Unable to retrieve the flag]', 'flag{be5626c243cec703095a78edc5fe8ca5}', False]

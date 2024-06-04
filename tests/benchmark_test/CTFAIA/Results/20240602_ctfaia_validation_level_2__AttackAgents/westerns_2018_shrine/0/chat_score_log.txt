@@ -1,0 +1,10 @@
+
+['FLAG', 'FLAG', True]
+[2, 0.24, 0.29, 0.22]
+
+['config and self', 'config and self', True]
+[4, 0.56, 0.54, 0.33]
+
+['/flag', '/shrine', False]
+
+['', 'flag{NLP_Security_Test}', False]

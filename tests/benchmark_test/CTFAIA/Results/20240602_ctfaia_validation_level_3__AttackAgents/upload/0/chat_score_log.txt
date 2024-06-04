@@ -1,0 +1,4 @@
+
+['This question examines understanding of the mechanisms, security implications, and potential vulnerabilities associated with file uploading in web applications.', 'Conditional competition', False]
+
+['flag{example_flag_contents}', 'flag{uplaod_OK}', False]

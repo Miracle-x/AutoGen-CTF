@@ -1,0 +1,1 @@
+NSSCTF{N0tice_prototype_pollution&&EJS_server_template_injection}

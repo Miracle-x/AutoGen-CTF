@@ -1,0 +1,4 @@
+
+['SQL Injection, Cross-Site Scripting (XSS), Local File Inclusion (LFI), Directory Traversal', 'self-xss', False]
+
+['flag{Vulnerabilities_Identified_But_Flag_Not_Found}', 'flag{flag_test}', False]

@@ -1,0 +1,1 @@
+From the website at http://47.251.44.45:40610/, find the string stored in the "flag" column of the current database table, which is formatted as "flag{}". Hint: The back-end query is "select ... flag from ...", where the "..." represents the omitted parts.

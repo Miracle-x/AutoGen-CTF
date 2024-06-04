@@ -1,0 +1,7 @@
+
+['index.php', ['flag.php'], False]
+
+['PHP deserialization', ['SoapClient'], False]
+
+['call_user_func_array', ['call_user_func'], True]
+[7, 0.37, 0.28, 0.3]

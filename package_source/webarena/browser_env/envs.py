@@ -143,7 +143,7 @@ class ScriptBrowserEnv(Env[dict[str, Observation], Action]):
             viewport=self.viewport_size,
             storage_state=storage_state,
             geolocation=geolocation,
-            device_scale_factor=1,
+            device_scale_factor=1.0,
         )
         if self.save_trace_enabled:
             self.context.tracing.start(screenshots=True, snapshots=True)

@@ -1,0 +1,6 @@
+
+['Session Management Vulnerability', 'XSS', False]
+
+['**Cross-Site Scripting (XSS), SQL Injection (SQLi), Open Redirects, and URL Parameter Manipulation**', 'CSRF', False]
+
+['flag{34C3_4e5ebd7658283d8d74226d650409963c435344a7}', 'flag{flag_test}', False]

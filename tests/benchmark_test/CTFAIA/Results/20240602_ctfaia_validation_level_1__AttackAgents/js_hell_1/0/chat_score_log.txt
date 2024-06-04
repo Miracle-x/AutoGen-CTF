@@ -1,0 +1,24 @@
+
+['main.js', 'main.js', True]
+[1, 0.32, 0.3, 0.5]
+
+['Base64', 'Base64', True]
+[4, 0.6799999999999999, 0.63, 0.75]
+
+['flag{38469ca0ef5b847cc4247d41ff7f9e82}', 'flag{38469ca0ef5b847cc4247f41ff7f9e82}', False]
+
+['main.js', 'main.js', True]
+[1, 0.32, 0.3, 0.5]
+
+['Base64', 'Base64', True]
+[4, 0.6799999999999999, 0.63, 0.75]
+
+['flag{38469ca0ef5b847cc4247d41ff7f9e82}', 'flag{38469ca0ef5b847cc4247f41ff7f9e82}', False]
+
+['main.js', 'main.js', True]
+[1, 0.32, 0.3, 0.5]
+
+['Base64', 'Base64', True]
+[4, 0.6799999999999999, 0.63, 0.75]
+
+['flag{38469ca0ef5b847cc4247d41ff7f9e82}', 'flag{38469ca0ef5b847cc4247f41ff7f9e82}', False]

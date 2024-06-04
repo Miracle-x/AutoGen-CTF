@@ -1,0 +1,6 @@
+
+['/source_code/', 'www.zip', False]
+
+['Magic method trigger', 'String increment escape', False]
+
+['flag{example_flag}', 'flag{test_flag}', False]

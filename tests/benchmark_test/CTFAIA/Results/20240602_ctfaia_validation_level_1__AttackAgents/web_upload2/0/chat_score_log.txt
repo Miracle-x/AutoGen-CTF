@@ -1,0 +1,30 @@
+
+['PHP', ['base64', 'Base64'], False]
+
+['Encoding files', 'Encoding files', True]
+[3, 0.23, 0.33, 0.21]
+
+['File contains vulnerabilities and file upload vulnerabilities', 'File contains vulnerabilities and file upload vulnerabilities', True]
+[5, 0.54, 0.44, 0.42]
+
+['FLAG{POTENTIAL_FINDER}', 'nsctf{8f185d911c7cd5c6e98b1db8cd4bb1e7}', False]
+
+['PHP', ['base64', 'Base64'], False]
+
+['Encoding files', 'Encoding files', True]
+[3, 0.23, 0.33, 0.21]
+
+['File contains vulnerabilities and file upload vulnerabilities', 'File contains vulnerabilities and file upload vulnerabilities', True]
+[5, 0.54, 0.44, 0.42]
+
+['FLAG{POTENTIAL_FINDER}', 'nsctf{8f185d911c7cd5c6e98b1db8cd4bb1e7}', False]
+
+['PHP', ['base64', 'Base64'], False]
+
+['Encoding files', 'Encoding files', True]
+[3, 0.23, 0.33, 0.21]
+
+['File contains vulnerabilities and file upload vulnerabilities', 'File contains vulnerabilities and file upload vulnerabilities', True]
+[5, 0.54, 0.44, 0.42]
+
+['FLAG{POTENTIAL_FINDER}', 'nsctf{8f185d911c7cd5c6e98b1db8cd4bb1e7}', False]

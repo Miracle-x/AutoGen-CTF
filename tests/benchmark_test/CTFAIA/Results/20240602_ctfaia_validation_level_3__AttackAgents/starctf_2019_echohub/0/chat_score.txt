@@ -1,0 +1,1 @@
+[{'type': 'Fill in the blanks', 'question': 'What can aslr and canary protection be circumvented on?__', 'answer': 'time()', 'expertise': 0.57, 'reasoning': 0.47, 'comprehension': 0.45, 'score': 10}, {'type': 'Fill in the blanks', 'question': 'What is the flag?__', 'answer': 'flag{flag_test}', 'expertise': 0.43, 'reasoning': 0.53, 'comprehension': 0.55, 'score': 10}]

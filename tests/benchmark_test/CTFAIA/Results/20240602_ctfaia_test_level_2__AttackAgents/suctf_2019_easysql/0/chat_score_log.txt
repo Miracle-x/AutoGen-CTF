@@ -1,0 +1,14 @@
+
+['query', 'query', True]
+[1, 0.17, 0.15, 0.2]
+
+['SQL Injection', 'SQL Injection', True]
+[2, 0.32, 0.31, 0.43000000000000005]
+
+['Boolean-based', 'Stacked Queries', False]
+
+['table_name', 'Flag', False]
+
+['flag{SQL_injection_success}', ['1;set sql_mode=PIPES_AS_CONCAT;select 1', '*,1'], False]
+
+['flag{d41d8cd98f00b204e9800998ecf8427e}', 'flag{NLP_Security_Test}', False]

@@ -1,20 +1,20 @@
 [
     {
+        "model": "gpt-4o",
+        "api_key": "sk-ZjwbSXgX8xHFbemVB565E5F133B1496d89F8750046CeD1D3",
+        "base_url": "https://api.kwwai.top/v1"
+    },
+    {
         "model": "gpt-4-turbo",
-        "api_key": "<openai_api_key>",
-        "base_url": "<base_url>"
-    },
-    {
-        "model": "gpt-4-turbo-preview",
-        "api_key": "<openai_api_key>",
+        "api_key": "sk-ZjwbSXgX8xHFbemVB565E5F133B1496d89F8750046CeD1D3",
         "tags": ["llm"],
-        "base_url": "<base_url>"
+        "base_url": "https://api.kwwai.top/v1"
     },
     {
-        "model": "gpt-4-vision-preview",
-        "api_key": "<openai_api_key>",
+        "model": "gpt-4-turbo",
+        "api_key": "sk-ZjwbSXgX8xHFbemVB565E5F133B1496d89F8750046CeD1D3",
         "tags": ["mlm"],
         "max_tokens": 1000,
-        "base_url": "<base_url>"
+        "base_url": "https://api.kwwai.top/v1"
     }
 ]

@@ -1,0 +1,6 @@
+
+['username', 'X-Forwarded-For', False]
+
+['username', 'Current IP', False]
+
+['flag{example_flag}', 'flag{NLP_Security}', False]

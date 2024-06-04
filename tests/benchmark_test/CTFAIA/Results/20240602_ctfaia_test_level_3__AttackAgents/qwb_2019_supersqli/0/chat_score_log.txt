@@ -1,0 +1,8 @@
+
+['`numbers_table`', '1919810931114514', False]
+
+['4096', '2', False]
+
+['select, update, delete, drop, insert, where', ['select', 'update', 'delete', 'drop', 'insert', 'where'], False]
+
+['flag{SQL_Injection_Confirmed_Vulnerability}', 'flag{NLP_Security}', False]

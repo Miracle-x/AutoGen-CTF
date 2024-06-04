@@ -1,0 +1,39 @@
+
+["' OR 1=1 --", 'ffifdyop', False]
+
+['secretfile123.txt', 'levell14.php', False]
+
+['param3', 'param3', True]
+[4, 0.22, 0.14, 0.09]
+
+['GET', 'POST', False]
+
+['Use SQL Injection to test for MD5 hash collisions or use common password hashes to potentially match the stored value.', ['Array assignment', 'pass in two strings that have the same md5 value but are themselves different'], False]
+
+['BJD{ctf_success_fetch_flag}', 'BJD{Md_five_is_fun}', False]
+
+["' OR 1=1 --", 'ffifdyop', False]
+
+['secretfile123.txt', 'levell14.php', False]
+
+['param3', 'param3', True]
+[4, 0.22, 0.14, 0.09]
+
+['GET', 'POST', False]
+
+['Use SQL Injection to test for MD5 hash collisions or use common password hashes to potentially match the stored value.', ['Array assignment', 'pass in two strings that have the same md5 value but are themselves different'], False]
+
+['BJD{ctf_success_fetch_flag}', 'BJD{Md_five_is_fun}', False]
+
+["' OR 1=1 --", 'ffifdyop', False]
+
+['secretfile123.txt', 'levell14.php', False]
+
+['param3', 'param3', True]
+[4, 0.22, 0.14, 0.09]
+
+['GET', 'POST', False]
+
+['Use SQL Injection to test for MD5 hash collisions or use common password hashes to potentially match the stored value.', ['Array assignment', 'pass in two strings that have the same md5 value but are themselves different'], False]
+
+['BJD{ctf_success_fetch_flag}', 'BJD{Md_five_is_fun}', False]

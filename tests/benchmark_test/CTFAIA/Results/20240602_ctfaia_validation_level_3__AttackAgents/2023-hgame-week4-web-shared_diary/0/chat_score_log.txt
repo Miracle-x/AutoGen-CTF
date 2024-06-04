@@ -1,0 +1,4 @@
+
+['eval', ['escapeFunction'], False]
+
+["The server should execute the action of revealing and returning the hidden flag in the specified format 'flag{}'.", ['cat /flag'], False]

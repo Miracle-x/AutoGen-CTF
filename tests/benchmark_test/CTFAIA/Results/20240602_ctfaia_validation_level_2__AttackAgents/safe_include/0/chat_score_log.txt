@@ -1,0 +1,10 @@
+
+['file', 'file', True]
+[4, 0.19, 0.25, 0.39]
+
+['/var/www/html and /tmp', '/var/www/html and /tmp', True]
+[6, 0.5, 0.5, 0.5]
+
+['`@include $file;`', ['@include $file', '@include $file;', '11 @include $file', '11 @include $file;'], False]
+
+['[No flag found]', 'flag{d41d8cd98f00b204e9800998ecf8427e}', False]

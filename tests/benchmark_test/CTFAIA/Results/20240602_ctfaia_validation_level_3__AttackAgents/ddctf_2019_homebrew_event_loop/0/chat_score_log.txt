@@ -1,0 +1,7 @@
+
+['0', '3', False]
+
+['6', '6', True]
+[6, 0.38, 0.27, 0.33]
+
+['flag{0_D1Amond_3_Points}', 'flag{3v41_3v3nt_100p_aNd_fLASK_c0Ok1e}', False]

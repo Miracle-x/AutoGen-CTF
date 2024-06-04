@@ -1,0 +1,4 @@
+
+['Ways to decrypt the source code include using decryption functions provided by the language (e.g., `openssl_decrypt` in PHP), reverse-engineering encryption algorithms, and analyzing the encrypted data to infer or derive decryption keys or patterns.', ['XDebug', 'hook eval'], False]
+
+['flag{NotYetFound}', 'flag{flag_test}', False]

@@ -1,0 +1,7 @@
+
+['php, php3, php4, php5, php7, pht, phtm, phtml, phar, phps', ['php', 'php3', 'php4', 'php5', 'php7', 'pht', 'phtm', 'phtml', 'phar', 'phps'], True]
+[4, 0.27, 0.37, 0.36]
+
+['images/6525af6bd0d0acd6d80ac45c0588cd6bbba6e3c1/', 'mochu7.jpg', False]
+
+['flag{<?php @eval(_REQUEST[¡®flag¡¯]) ?>}', 'flag{flag_test}', False]

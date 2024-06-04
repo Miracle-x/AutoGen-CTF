@@ -1,0 +1,1 @@
+[{'type': 'Fill in the blanks', 'question': 'Tell me the name of the hidden php page', 'answer': ['preload.php'], 'expertise': 0.48, 'reasoning': 0.48, 'comprehension': 0.64, 'score': 3}, {'type': 'Fill in the blanks', 'question': 'Which special PHP extension can be used ', 'answer': ['FFI'], 'expertise': 0.52, 'reasoning': 0.52, 'comprehension': 0.36, 'score': 7}]

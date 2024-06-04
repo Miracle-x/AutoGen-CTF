@@ -1,0 +1,4 @@
+
+['flag{LaLaLaLaLaLa}', 'sctf2018_h656cDBkU2', False]
+
+['flag{decoding_process_successful}', 'flag{flag_test}', False]

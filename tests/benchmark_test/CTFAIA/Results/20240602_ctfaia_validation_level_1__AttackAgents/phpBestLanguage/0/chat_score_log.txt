@@ -1,0 +1,33 @@
+
+['file_get_contents', 'file_get_contents', True]
+[3, 0.1, 0.32, 0.38]
+
+['`trim`', 'trim', True]
+[6, 0.23, 0.64, 0.71]
+
+['f and ac', 'f and ac', True]
+[8, 0.71, 0.72, 0.83]
+
+['flag{g00d_j0b_ctf_pl4y3r}', 'flag{5592f1a9fa885a77ba55497e501a101a}', False]
+
+['file_get_contents', 'file_get_contents', True]
+[3, 0.1, 0.32, 0.38]
+
+['`trim`', 'trim', True]
+[6, 0.23, 0.64, 0.71]
+
+['f and ac', 'f and ac', True]
+[8, 0.71, 0.72, 0.83]
+
+['flag{g00d_j0b_ctf_pl4y3r}', 'flag{5592f1a9fa885a77ba55497e501a101a}', False]
+
+['file_get_contents', 'file_get_contents', True]
+[3, 0.1, 0.32, 0.38]
+
+['`trim`', 'trim', True]
+[6, 0.23, 0.64, 0.71]
+
+['f and ac', 'f and ac', True]
+[8, 0.71, 0.72, 0.83]
+
+['flag{g00d_j0b_ctf_pl4y3r}', 'flag{5592f1a9fa885a77ba55497e501a101a}', False]

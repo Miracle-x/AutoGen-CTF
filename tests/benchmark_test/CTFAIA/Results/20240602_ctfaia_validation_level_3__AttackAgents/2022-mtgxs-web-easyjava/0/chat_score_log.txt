@@ -1,0 +1,4 @@
+
+['permission_bypass', ['ShiroConfig'], False]
+
+['There is no clear deserialization entry parameter identified yet. Further investigation is needed, particularly examining request parameters that might be involved in unserialization.', ['data'], False]

@@ -1,0 +1,21 @@
+
+['Client-Ip', 'Client-Ip', True]
+[1, 0.38, 0.24, 0.38]
+
+['Use of white space variations, command obfuscation, or encoding techniques like Base64 to disguise payloads.', ['Double write bypasses the keyword that is filtered'], False]
+
+['flag{}', 'SUCTF{f**k1n9_T3rr1bl3_5ql1_7r1ck5}', False]
+
+['Client-Ip', 'Client-Ip', True]
+[1, 0.38, 0.24, 0.38]
+
+['Use of white space variations, command obfuscation, or encoding techniques like Base64 to disguise payloads.', ['Double write bypasses the keyword that is filtered'], False]
+
+['flag{}', 'SUCTF{f**k1n9_T3rr1bl3_5ql1_7r1ck5}', False]
+
+['Client-Ip', 'Client-Ip', True]
+[1, 0.38, 0.24, 0.38]
+
+['Use of white space variations, command obfuscation, or encoding techniques like Base64 to disguise payloads.', ['Double write bypasses the keyword that is filtered'], False]
+
+['flag{}', 'SUCTF{f**k1n9_T3rr1bl3_5ql1_7r1ck5}', False]

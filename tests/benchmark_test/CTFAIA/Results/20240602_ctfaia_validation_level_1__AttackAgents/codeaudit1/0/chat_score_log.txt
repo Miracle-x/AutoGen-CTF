@@ -1,0 +1,30 @@
+
+['username and password', 'username and password', True]
+[5, 0.17, 0.33, 0.27]
+
+['MD5', ['md5', 'MD5', 'Message Digest Algorithm MD5'], False]
+
+['d41d8cd98f00b204e9800998ecf8427e', '0e462097431906509019562988736854', False]
+
+['flag{1bc29b36f623ba82aaf6724fd3b16718}', 'flag{1bc29b36f623ba82aaf6724fd3b16718}', True]
+[10, 0.43000000000000005, 0.55, 0.5700000000000001]
+
+['username and password', 'username and password', True]
+[5, 0.17, 0.33, 0.27]
+
+['MD5', ['md5', 'MD5', 'Message Digest Algorithm MD5'], False]
+
+['d41d8cd98f00b204e9800998ecf8427e', '0e462097431906509019562988736854', False]
+
+['flag{1bc29b36f623ba82aaf6724fd3b16718}', 'flag{1bc29b36f623ba82aaf6724fd3b16718}', True]
+[10, 0.43000000000000005, 0.55, 0.5700000000000001]
+
+['username and password', 'username and password', True]
+[5, 0.17, 0.33, 0.27]
+
+['MD5', ['md5', 'MD5', 'Message Digest Algorithm MD5'], False]
+
+['d41d8cd98f00b204e9800998ecf8427e', '0e462097431906509019562988736854', False]
+
+['flag{1bc29b36f623ba82aaf6724fd3b16718}', 'flag{1bc29b36f623ba82aaf6724fd3b16718}', True]
+[10, 0.43000000000000005, 0.55, 0.5700000000000001]

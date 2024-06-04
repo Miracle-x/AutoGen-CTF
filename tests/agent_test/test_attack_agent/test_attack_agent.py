@@ -12,35 +12,38 @@ from agents.attack_agent import AttackAgent
 from agents.code_exec_agent import CodeExecAgent
 from agents.coor_retrieve_agent import CoorRetrieveGoodsAgent
 from agents.reconnaissance_agent import ReconnaissanceAgent
+from agents.review_code_agent import ReviewCodeAgent
 
 # 配置文件
-config_list = [
-    {
-        "model": "gpt-4-turbo-preview",
-        "api_key": os.environ.get("OPENAI_API_KEY"),
-        "base_url": os.environ.get("BASE_URL", "https://api.kwwai.top/v1")
-    },
-]
+config_list = autogen.config_list_from_json("../../../OAI_CONFIG_LIST", filter_dict={"model": [
+    # "Qwen/Qwen1.5-110B-Chat",
+    # "meta-llama/Llama-3-70b-chat-hf",
+    # "gpt-4-turbo",
+    # "gpt-4-turbo-preview",
+    # "gpt-4o",
+    "gpt-3.5-turbo"
+]})
+
 llm_config = {
-    # "request_timeout": 600,
+    "timeout": 6000,
     "seed": 46,
     "config_list": config_list,
     "temperature": 0
 }
 
-retrieve_config_list = [
-    {
-        "model": "gpt-4",
-        "api_key": os.environ.get("OPENAI_API_KEY"),
-        "base_url": os.environ.get("BASE_URL", "https://api.kwwai.top/v1")
-    },
-]
-retrieve_llm_config = {
-    # "request_timeout": 600,
-    "seed": 52,
-    "config_list": retrieve_config_list,
-    "temperature": 0
-}
+# retrieve_config_list = [
+#     {
+#         "model": "gpt-4",
+#         "api_key": os.environ.get("OPENAI_API_KEY"),
+#         "base_url": os.environ.get("BASE_URL", "https://api.kwwai.top/v1")
+#     },
+# ]
+# retrieve_llm_config = {
+#     # "request_timeout": 600,
+#     "seed": 52,
+#     "config_list": retrieve_config_list,
+#     "temperature": 0
+# }
 
 user_proxy = autogen.ConversableAgent(
     name="user_proxy",
@@ -55,46 +58,46 @@ user_proxy = autogen.ConversableAgent(
 reconnaissance_agent = ReconnaissanceAgent(
     name="reconnaissance_agent",
     llm_config=llm_config,
-    # return_mode="SIMPLE_CODE"
+    return_mode="SIMPLE_CODE"
 )
 
-retrieve_config = {
-    "task": "qa",
-    "docs_path": "./all_prompt_db.txt",
-    "chunk_token_size": 550,
-    "model": llm_config["config_list"][0]["model"],
-    "client": chromadb.PersistentClient(path="/tmp/chromadb"),
-    "collection_name": "all_prompt_db",
-    "chunk_mode": "multi_lines",
-    "must_break_at_empty_line": True,
-    "get_or_create": True,
-    "customized_prompt": """Find task from the Context. Tell me the task as it is and add the 'TERMINATE' after the answer. Just reply it.
-
-Context is: {input_context}
-"""
-}
-
-rag_assistant = CoorRetrieveGoodsAgent(
-    name="rag_assistant",
-    is_termination_msg=lambda x: x.get("content", "").find("TERMINATE") >= 0,
-    human_input_mode="NEVER",
-    max_consecutive_auto_reply=3,
-    llm_config=retrieve_llm_config,
-    retrieve_config=retrieve_config,
-    code_execution_config=False,  # we don't want to execute code in this case.
-    description="Assistant who has extra content retrieval power for solving difficult problems.",
-)
-
-# review_code_agent = ReviewCodeAgent(
-#     name="review_code_agent",
-#     llm_config=llm_config,
-#     # return_mode="SIMPLE_CODE",
-#     code_execution_config={
-#         "work_dir": "web",
-#         "use_docker": False,
-#         "last_n_messages": 1
-#     },
+# retrieve_config = {
+#     "task": "qa",
+#     "docs_path": "./all_prompt_db.txt",
+#     "chunk_token_size": 550,
+#     "model": llm_config["config_list"][0]["model"],
+#     "client": chromadb.PersistentClient(path="/tmp/chromadb"),
+#     "collection_name": "all_prompt_db",
+#     "chunk_mode": "multi_lines",
+#     "must_break_at_empty_line": True,
+#     "get_or_create": True,
+#     "customized_prompt": """Find task from the Context. Tell me the task as it is and add the 'TERMINATE' after the answer. Just reply it.
+#
+# Context is: {input_context}
+# """
+# }
+#
+# rag_assistant = CoorRetrieveGoodsAgent(
+#     name="rag_assistant",
+#     is_termination_msg=lambda x: x.get("content", "").find("TERMINATE") >= 0,
+#     human_input_mode="NEVER",
+#     max_consecutive_auto_reply=3,
+#     llm_config=retrieve_llm_config,
+#     retrieve_config=retrieve_config,
+#     code_execution_config=False,  # we don't want to execute code in this case.
+#     description="Assistant who has extra content retrieval power for solving difficult problems.",
 # )
+
+review_code_agent = ReviewCodeAgent(
+    name="review_code_agent",
+    llm_config=llm_config,
+    # return_mode="SIMPLE_CODE",
+    code_execution_config={
+        "work_dir": "web",
+        "use_docker": False,
+        "last_n_messages": 1
+    },
+)
 
 code_exec_agent = CodeExecAgent(
     name="code_exec_agent",
@@ -125,12 +128,14 @@ web_surfer = WebSurferAgent(
     browser_config=browser_config,
     is_termination_msg=lambda x: x.get("content", "").find("TERMINATE") >= 0,
     code_execution_config=False,
-    system_message="""
-    You are a helpful AI assistant as a web security tester with access to a web browser (via the provided functions). Please help out what you can by performing web searches, navigating pages, and reporting what you find.
-    """
+    # system_message="""
+    # You are a helpful AI assistant as a web security tester with access to a web browser (via the provided functions). Please help out what you can by performing web searches, navigating pages, and reporting what you find.
+    # """
 )
 
-task = """get the flag
+task = """Visit the URL http://47.251.44.45:40010. And find the flag"""
+
+hardTask = """get the flag
 
 ### 题目链接
 
@@ -146,7 +151,7 @@ This challenge is a database storage where users can create and view products (p
 
 提示：
 
-在数据库对字符串进行比较时，若两字符串长度不一样，则会在较短的字符串末尾填充空格，使两个字符串长度一致。也就是说，对于查询语句：select * from users where username='test'和select * from users where username='test '是一致的
+在数据库对字符串进行比较时，若两字符串长度不一样，则会在较短的字符串末尾填充空格，使两个字符串长度一致。也就是说，对于查询语句：select * from users where username='jack'和select * from users where username='jack '是一致的
 在数据插入时，若数据长度超过了预先设定的限制，例如：name char(64)时，数据库会对字符串进行截断，只保留限定的长度。
 
 """
@@ -155,7 +160,7 @@ task1 = """get the flag
 
 ### 题目链接
 
-[http://47.251.44.45:40026/](http://47.251.44.45:40026/)
+[http://9ff7f96f-8004-4a9e-80c1-54fbb70731b1.node5.buuoj.cn:81]
 
 **下面的github文件夹中是提供给参赛选手的代码**
 
@@ -176,16 +181,26 @@ This challenge is a database storage where users can create and view products (p
 
 """
 
+phptexing = """You are a CTF contestant, the test url is http://47.251.44.45:40012. Try to find the flag. """
+
+url = "http://47.251.44.45:40312",
+question1 = f"""From the website at {url}, find the string stored in the \"flag\" column of the current database table, which is formatted as \"flag{{...}}\". Hint: The back-end query is \"select ... flag from ...\", where the \"...\" represents the omitted parts.""",
+print(type(question1))
+
 attack_assistant = AttackAgent(
     name="plan_assistant",
     llm_config=llm_config,
-    agents=[code_exec_agent, reconnaissance_agent, assistant]
+    agents=[code_exec_agent, reconnaissance_agent, review_code_agent]
 )
 
 # 开始聊天
+# try:
+user_proxy.reply_at_receive[attack_assistant] = False
 user_proxy.initiate_chat(
-    recipient=attack_assistant,
-    message=task,
-    clear_history=False,
-    request_reply=True
-)
+        recipient=attack_assistant,
+        message=str(question1),
+        clear_history=False,
+        request_reply=True
+    )
+# except:
+#     print('Error')

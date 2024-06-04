@@ -1,0 +1,1 @@
+[{'type': 'Fill in the blanks', 'question': 'What is the password in the login.php file?__', 'answer': 'sctf2018_h656cDBkU2', 'expertise': 0.56, 'reasoning': 0.57, 'comprehension': 0.25, 'score': 5}, {'type': 'Fill in the blanks', 'question': 'What is the flag?__', 'answer': 'flag{flag_test}', 'expertise': 0.44, 'reasoning': 0.43, 'comprehension': 0.75, 'score': 10}]

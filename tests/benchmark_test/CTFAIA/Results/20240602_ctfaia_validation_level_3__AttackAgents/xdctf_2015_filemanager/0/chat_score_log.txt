@@ -1,0 +1,10 @@
+
+['.hidden', 'www.tar.gz', False]
+
+['gif, jpg, png, zip, txt', 'Above all', False]
+
+['filename', 'extension', False]
+
+['flag.txt', 'flag_emmmmmmmmm', False]
+
+['[flag{example_flag_content}]', 'flag{flag_test}', False]

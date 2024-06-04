@@ -25,7 +25,7 @@ REPO_DIR = os.path.join(DOWNLOADS_DIR, "CTFAIA")
 USE_HARD_PROMPT = False
 
 # 初始化该目录的数据集
-DATASET_VERSION = "20240423"
+DATASET_VERSION = "20240602"
 
 
 def download_ctfaia():
