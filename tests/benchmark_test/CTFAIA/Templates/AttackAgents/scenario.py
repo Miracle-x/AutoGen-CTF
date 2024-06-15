@@ -20,7 +20,7 @@ PROMPT = ""
 with open("prompt.txt", "rt") as fh:
     PROMPT = fh.read().strip()
 
-filename = "__ANNEX__".strip()
+filename = "".strip()
 
 # Questions to ask
 question = PROMPT
@@ -28,18 +28,20 @@ question = PROMPT
 if len(filename) > 0:
     question = f"Consider the folder '{filename}', which can be read from the current working directory. If you need to read or write it, output python code in a code block (```python) to do so. {question}"
 
+config_list = autogen.config_list_from_json("OAI_CONFIG_LIST", filter_dict={"model": [
+    # "Qwen/Qwen1.5-110B-Chat",
+    # "meta-llama/Llama-3-70b-chat-hf",
+    # "gpt-4-turbo",
+    "gpt-4o",
+    # "gpt-4-turbo-preview",
+    # "gpt-3.5-turbo",
+]})
+
 ###################################################################################################################################
 # To define the framework and start executing the task, you need to print out the message record
 # question is the input
 ###################################################################################################################################
 
-config_list = autogen.config_list_from_json("OAI_CONFIG_LIST", filter_dict={"model": [
-    # "Qwen/Qwen1.5-110B-Chat",
-    "meta-llama/Llama-3-70b-chat-hf",
-    # "gpt-4-turbo",
-    # "gpt-4-turbo-preview",
-    # "gpt-3.5-turbo",
-]})
 
 llm_config = {
     "timeout": 6000,
@@ -88,8 +90,8 @@ attack_assistant = AttackAgent(
 try:
     user_proxy.reply_at_receive[attack_assistant] = False
     user_proxy.initiate_chat(attack_assistant, message=question)
-except:
-    print('Error')
+except Exception as e:
+    print('Error',e)
 
 chat_messages = attack_assistant.attack_messages
 
@@ -105,7 +107,7 @@ with open("chat_score.txt", "rt") as fh:
 
 chat_score_assistant = autogen.AssistantAgent(
     "assistant",
-    system_message="Answer the latest questions only according to the message record, strictly follow the requirements of the latest questions. Just reply the answer. Don't add anything else.",
+    system_message="Answer the latest question only according to the message record, look carefully for the most relevant and likely answers to the questions in your notes, strictly follow the requirements of the latest questions. Just reply the answer. Don't add anything else including the reason.Keep your answers as short and clear as possible. Don't use sentences. Use single words or two or three words.",
     llm_config=testbed_utils.default_llm_config(config_list, timeout=180),
 )
 context_handling = transform_messages.TransformMessages(

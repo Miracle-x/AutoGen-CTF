@@ -25,7 +25,7 @@ REPO_DIR = os.path.join(DOWNLOADS_DIR, "CTFAIA")
 USE_HARD_PROMPT = False
 
 # 初始化该目录的数据集
-DATASET_VERSION = "20240603"
+DATASET_VERSION = "20240602"
 
 
 def download_ctfaia():
@@ -86,7 +86,7 @@ def create_jsonl(name, tasks, files_dir, template):
 
 ###############################################################################
 def main():
-    # download_ctfaia()
+    download_ctfaia()
     ctfaia_validation_files = os.path.join(REPO_DIR,DATASET_VERSION,"validation")
     ctfaia_test_files = os.path.join(REPO_DIR,DATASET_VERSION,"test")
 
@@ -95,10 +95,12 @@ def main():
 
     # Load the CTFAIA data
     ctfaia_validation_tasks = [[], [], []]
+    all_tasks = []
     with open(os.path.join(ctfaia_validation_files, "metadata.jsonl")) as fh:
         for line in fh:
             data = json.loads(line)
             ctfaia_validation_tasks[data["Level"] - 1].append(data)
+            all_tasks.append(data)
 
     ctfaia_test_tasks = [[], [], []]
     with open(os.path.join(ctfaia_test_files, "metadata.jsonl"), encoding='utf-8') as fh:
@@ -110,6 +112,7 @@ def main():
                 continue
 
             ctfaia_test_tasks[data["Level"] - 1].append(data)
+            all_tasks.append(data)
 
     # list all directories in the Templates directory
     # and populate a dictionary with the name and path
@@ -127,41 +130,47 @@ def main():
     # Create the various combinations of [models] x [templates]
     for t in templates.items():
         create_jsonl(
-            DATASET_VERSION+f"_ctfaia_validation_level_1__{t[0]}",
-            ctfaia_validation_tasks[0],
+            f"{t[0]}__ctfaia__all__{DATASET_VERSION}",
+            all_tasks,
             ctfaia_validation_files,
             t[1],
         )
-        create_jsonl(
-            DATASET_VERSION+f"_ctfaia_validation_level_2__{t[0]}",
-            ctfaia_validation_tasks[1],
-            ctfaia_validation_files,
-            t[1],
-        )
-        create_jsonl(
-            DATASET_VERSION+f"_ctfaia_validation_level_3__{t[0]}",
-            ctfaia_validation_tasks[2],
-            ctfaia_validation_files,
-            t[1],
-        )
-        create_jsonl(
-            DATASET_VERSION+f"_ctfaia_test_level_1__{t[0]}",
-            ctfaia_test_tasks[0],
-            ctfaia_test_files,
-            t[1],
-        )
-        create_jsonl(
-            DATASET_VERSION+f"_ctfaia_test_level_2__{t[0]}",
-            ctfaia_test_tasks[1],
-            ctfaia_test_files,
-            t[1],
-        )
-        create_jsonl(
-            DATASET_VERSION+f"_ctfaia_test_level_3__{t[0]}",
-            ctfaia_test_tasks[2],
-            ctfaia_test_files,
-            t[1],
-        )
+        # create_jsonl(
+        #     DATASET_VERSION + f"_ctfaia_validation_level_1__{t[0]}",
+        #     ctfaia_validation_tasks[0],
+        #     ctfaia_validation_files,
+        #     t[1],
+        # )
+        # create_jsonl(
+        #     DATASET_VERSION+f"_ctfaia_validation_level_2__{t[0]}",
+        #     ctfaia_validation_tasks[1],
+        #     ctfaia_validation_files,
+        #     t[1],
+        # )
+        # create_jsonl(
+        #     DATASET_VERSION+f"_ctfaia_validation_level_3__{t[0]}",
+        #     ctfaia_validation_tasks[2],
+        #     ctfaia_validation_files,
+        #     t[1],
+        # )
+        # create_jsonl(
+        #     DATASET_VERSION+f"_ctfaia_test_level_1__{t[0]}",
+        #     ctfaia_test_tasks[0],
+        #     ctfaia_test_files,
+        #     t[1],
+        # )
+        # create_jsonl(
+        #     DATASET_VERSION+f"_ctfaia_test_level_2__{t[0]}",
+        #     ctfaia_test_tasks[1],
+        #     ctfaia_test_files,
+        #     t[1],
+        # )
+        # create_jsonl(
+        #     DATASET_VERSION+f"_ctfaia_test_level_3__{t[0]}",
+        #     ctfaia_test_tasks[2],
+        #     ctfaia_test_files,
+        #     t[1],
+        # )
 
 
 if __name__ == "__main__":

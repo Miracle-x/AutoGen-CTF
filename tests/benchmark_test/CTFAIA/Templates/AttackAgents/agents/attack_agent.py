@@ -11,7 +11,13 @@ from autogen import Agent, ConversableAgent, GroupChatManager, GroupChat, OpenAI
 
 def remove_code_block_markers(input_text):
     # Remove ```json and ``` markers
-    return re.sub(r'```json|```', '', input_text).strip()
+    # input_text = re.sub(r'```json|```', '', input_text).strip()
+    pattern = r'\{.*\}'
+    match = re.search(pattern, input_text, re.DOTALL)
+    if match:
+        return match.group(0)
+    else:
+        exit()
 
 
 class AttackAgent(ConversableAgent):
@@ -59,9 +65,10 @@ class AttackAgent(ConversableAgent):
         print("\n", "#" * 80, flush=True, sep="")
 
     def _print_thought(self, message):
+        # return
         # print(self.name + " (thought)\n")
         print(str(message).strip() + "\n")
-        print("\n", "-" * 80, flush=True, sep="")
+        # print("\n", "-" * 80, flush=True, sep="")
 
     def _broadcast(self, message, out_loud=[], exclude=[]):
         m = copy.deepcopy(message)
@@ -107,6 +114,7 @@ To address this request we have assembled the following team:
 Based on the team composition, and known and unknown facts, please devise a short bullet-point plan step by step for addressing the original request.
 You need to give a bullet-point content for each step, the members involved in completing this step, and the division of labor among the members.
 Remember, a team member's particular expertise may not be needed for this task, and some members can cooperate with some of others to complete the work more effectively.
+Remember, review_code_agent has a lot of knowledge about cyber attacks, so make sure you put review_code_agent on the team and have at least one interaction with it every time you plan.
 
 You can make a preliminary plan by following these steps:
     1. select the reconnaissance_agent to visit the website.
@@ -344,7 +352,7 @@ Note that you only answer 'Yes' or 'No' by checking whether the requst is satisf
             self._broadcast({"role": "user", "content": init_exec_plan_message, "name": sender.name})
             self.attack_messages.append({"role": "user", "content": init_exec_plan_message, "name": sender.name})
 
-            # plan loop
+            # step loop
             for step, step_json in plan.items():
                 self._print_thought('*' * 10 + step + '*' * 10)
                 self._print_thought(step_json['content'])
@@ -359,11 +367,49 @@ Note that you only answer 'Yes' or 'No' by checking whether the requst is satisf
                 self.attack_messages.append({"role": "user", "content": init_group_message, "name": sender.name})
 
                 # agents loop
-                while total_turns < self._max_turns:
-                    while True:
-                        check_prompt = self.step_check_prompt(team, step_json['content'], step_json['division'],
-                                                              ','.join(step_json['members']), plan)
-                        self.attack_messages.append({"role": "user", "content": check_prompt, "name": sender.name})
+                while True:
+                    check_prompt = self.step_check_prompt(team, step_json['content'], step_json['division'],
+                                                          ','.join(step_json['members']), plan)
+                    self.attack_messages.append({"role": "user", "content": check_prompt, "name": sender.name})
+                    response = self.client.create(
+                        messages=self.attack_messages,
+                        cache=self.client_cache,
+                        # response_format={"type": "json_object"},
+                    )
+                    self.attack_messages.pop()
+                    extracted_response = self.client.extract_text_or_completion_object(response)[0]
+                    try:
+                        extracted_response = remove_code_block_markers(extracted_response)
+                        check_res_json = json.loads(extracted_response)
+                    except json.decoder.JSONDecodeError as e:
+                        # Something went wrong. Restart this loop.
+                        self._print_thought(str(e))
+                        self._print_thought(extracted_response)
+                        break
+
+                    self._print_thought(json.dumps(check_res_json, indent=4))
+
+                    if check_res_json["step_need_change"]["answer"]:
+                        break
+
+                    elif check_res_json["plan_need_change"]["answer"]:
+                        self._print_thought("We aren't making progress. Let's reset.")
+                        new_facts_prompt = self.new_fact_prompt(facts)
+                        self.attack_messages.append(
+                            {"role": "user", "content": new_facts_prompt, "name": sender.name})
+                        response = self.client.create(
+                            messages=self.attack_messages,
+                            cache=self.client_cache,
+                        )
+                        self.attack_messages.pop()
+                        facts = self.client.extract_text_or_completion_object(response)[0]
+
+                        self._print_thought('*' * 10 + '新事实' + '*' * 10)
+                        self._print_thought(facts)
+
+                        new_plan_prompt = self.new_plan_prompt(team, task, names, facts)
+                        self.attack_messages.append(
+                            {"role": "user", "content": new_plan_prompt, "name": sender.name})
                         response = self.client.create(
                             messages=self.attack_messages,
                             cache=self.client_cache,
@@ -373,19 +419,17 @@ Note that you only answer 'Yes' or 'No' by checking whether the requst is satisf
                         extracted_response = self.client.extract_text_or_completion_object(response)[0]
                         try:
                             extracted_response = remove_code_block_markers(extracted_response)
-                            check_res_json = json.loads(extracted_response)
+                            plan = json.loads(extracted_response)
                         except json.decoder.JSONDecodeError as e:
                             # Something went wrong. Restart this loop.
                             self._print_thought(str(e))
                             self._print_thought(extracted_response)
-                            continue
-                        break
-                    self._print_thought(json.dumps(check_res_json, indent=4))
-
-                    if check_res_json["step_need_change"]["answer"]:
+                            break
+                        self._print_thought('*' * 10 + '新计划' + '*' * 10)
+                        self._print_thought(json.dumps(plan, indent=4))
                         break
 
-                    elif not check_res_json["plan_need_change"]["answer"]:
+                    else:
                         # Broadcast the message to all agents
                         m = {"role": "user", "content": check_res_json["instruction_or_question"]["answer"],
                              "name": self.name}
@@ -410,43 +454,6 @@ Note that you only answer 'Yes' or 'No' by checking whether the requst is satisf
                                 self._print_thought('cur_turns: ' + str(total_turns))
                                 break
 
-                    else:
-                        self._print_thought("We aren't making progress. Let's reset.")
-                        new_facts_prompt = self.new_fact_prompt(facts)
-                        self.attack_messages.append(
-                            {"role": "user", "content": new_facts_prompt, "name": sender.name})
-                        response = self.client.create(
-                            messages=self.attack_messages,
-                            cache=self.client_cache,
-                        )
-                        self.attack_messages.pop()
-                        facts = self.client.extract_text_or_completion_object(response)[0]
-                        self._print_thought('*' * 10 + '新事实' + '*' * 10)
-                        self._print_thought(facts)
-                        while True:
-                            new_plan_prompt = self.new_plan_prompt(team, task, names, facts)
-                            self.attack_messages.append(
-                                {"role": "user", "content": new_plan_prompt, "name": sender.name})
-                            response = self.client.create(
-                                messages=self.attack_messages,
-                                cache=self.client_cache,
-                                # response_format={"type": "json_object"},
-                            )
-                            self.attack_messages.pop()
-                            extracted_response = self.client.extract_text_or_completion_object(response)[0]
-                            try:
-                                extracted_response = remove_code_block_markers(extracted_response)
-                                plan = json.loads(extracted_response)
-                            except json.decoder.JSONDecodeError as e:
-                                # Something went wrong. Restart this loop.
-                                self._print_thought(str(e))
-                                self._print_thought(extracted_response)
-                                continue
-                            break
-                        self._print_thought('*' * 10 + '新计划' + '*' * 10)
-                        self._print_thought(json.dumps(plan, indent=4))
-                        break
-
                 # 结束step循环
                 self._print_thought(check_res_json)
                 if check_res_json["plan_need_change"]["answer"]:
@@ -468,41 +475,40 @@ Note that you only answer 'Yes' or 'No' by checking whether the requst is satisf
             if extracted_response.lower() in ['yes', 'no']:
                 if extracted_response.lower() == 'yes':
                     return True, self.attack_messages[-1].get('content', '')
-                else:
-                    # 未完成则更新计划
-                    self._print_thought("We aren't making progress. Let's reset.")
-                    new_facts_prompt = self.new_fact_prompt(facts)
-                    self.attack_messages.append(
-                        {"role": "user", "content": new_facts_prompt, "name": sender.name})
-                    response = self.client.create(
-                        messages=self.attack_messages,
-                        cache=self.client_cache,
-                    )
-                    self.attack_messages.pop()
-                    facts = self.client.extract_text_or_completion_object(response)[0]
-                    self._print_thought('*' * 10 + '新事实' + '*' * 10)
-                    self._print_thought(facts)
-                    while True:
-                        new_plan_prompt = self.new_plan_prompt(team, task, names, facts)
-                        self.attack_messages.append(
-                            {"role": "user", "content": new_plan_prompt, "name": sender.name})
-                        response = self.client.create(
-                            messages=self.attack_messages,
-                            cache=self.client_cache,
-                            # response_format={"type": "json_object"},
-                        )
-                        self.attack_messages.pop()
-                        extracted_response = self.client.extract_text_or_completion_object(response)[0]
-                        try:
-                            extracted_response = remove_code_block_markers(extracted_response)
-                            plan = json.loads(extracted_response)
-                        except json.decoder.JSONDecodeError as e:
-                            # Something went wrong. Restart this loop.
-                            self._print_thought(str(e))
-                            self._print_thought(extracted_response)
-                            continue
-                        break
-                    self._print_thought('*' * 10 + '新计划' + '*' * 10)
-                    self._print_thought(json.dumps(plan, indent=4))
+                # else:
+                # # 未完成则更新计划
+                # self._print_thought("We aren't making progress. Let's reset.")
+                # new_facts_prompt = self.new_fact_prompt(facts)
+                # self.attack_messages.append(
+                #     {"role": "user", "content": new_facts_prompt, "name": sender.name})
+                # response = self.client.create(
+                #     messages=self.attack_messages,
+                #     cache=self.client_cache,
+                # )
+                # self.attack_messages.pop()
+                # facts = self.client.extract_text_or_completion_object(response)[0]
+                # self._print_thought('*' * 10 + '新事实' + '*' * 10)
+                # self._print_thought(facts)
+                #
+                # new_plan_prompt = self.new_plan_prompt(team, task, names, facts)
+                # self.attack_messages.append(
+                #     {"role": "user", "content": new_plan_prompt, "name": sender.name})
+                # response = self.client.create(
+                #     messages=self.attack_messages,
+                #     cache=self.client_cache,
+                #     # response_format={"type": "json_object"},
+                # )
+                # self.attack_messages.pop()
+                # extracted_response = self.client.extract_text_or_completion_object(response)[0]
+                # try:
+                #     extracted_response = remove_code_block_markers(extracted_response)
+                #     plan = json.loads(extracted_response)
+                # except json.decoder.JSONDecodeError as e:
+                #     # Something went wrong. Restart this loop.
+                #     self._print_thought(str(e))
+                #     self._print_thought(extracted_response)
+                #     break
+                # self._print_thought('*' * 10 + '新计划' + '*' * 10)
+                # self._print_thought(json.dumps(plan, indent=4))
 
         return False, None

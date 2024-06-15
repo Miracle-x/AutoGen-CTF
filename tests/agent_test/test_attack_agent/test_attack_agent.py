@@ -20,8 +20,8 @@ config_list = autogen.config_list_from_json("../../../OAI_CONFIG_LIST", filter_d
     # "meta-llama/Llama-3-70b-chat-hf",
     # "gpt-4-turbo",
     # "gpt-4-turbo-preview",
-    # "gpt-4o",
-    "gpt-3.5-turbo"
+    "gpt-4o",
+    # "gpt-3.5-turbo"
 ]})
 
 llm_config = {
@@ -198,7 +198,7 @@ attack_assistant = AttackAgent(
 user_proxy.reply_at_receive[attack_assistant] = False
 user_proxy.initiate_chat(
         recipient=attack_assistant,
-        message=str(question1),
+        message=hardTask,
         clear_history=False,
         request_reply=True
     )

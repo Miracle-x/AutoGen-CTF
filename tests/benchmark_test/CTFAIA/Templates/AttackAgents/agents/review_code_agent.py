@@ -8,17 +8,29 @@ from typing import Dict, Optional, Union, List, Tuple, Any, Literal
 
 def remove_code_block_markers(input_text):
     # Remove ```json and ``` markers
-    return re.sub(r'```json|```', '', input_text).strip()
+    # input_text = re.sub(r'```json|```', '', input_text).strip()
+    pattern = r'\{.*\}'
+    match = re.search(pattern, input_text, re.DOTALL)
+    if match:
+        return match.group(0)
+    else:
+        exit()
 
 
 def delete_empty_lines(text):
     return '\n'.join(line for line in text.splitlines() if line.strip())
 
-
 expertise = """
-Indicates that the localhost has 0.0.0.0, 127.0.0.1, localhost
+1.Indicates that the localhost has 0.0.0.0, 127.0.0.1, localhost.
+2.When the database compares strings, if the length of the two strings is different, a space is filled at the end of the shorter string to make the length of the two strings consistent.When data is inserted, if the data length exceeds the preset limit, the database truncates the string, retaining only the limited length.
+3.If a web page uses' strcmp() 'for equality comparison, it can be passed to an array of' strcmp() 'functions instead of a string, which will output unexpected behavior that can be used to bypass conditional comparisons.
+4.The md5 function cannot handle arrays and returns NULL if it is passed in as an array, so the encrypted value of both arrays is the same. You can bypass the strength comparison of the md5 function in this way. Use 'ffifdyop' to bypass queries such as "select * from 'admin' where password=md5($pass,true)".
+5.When base64 decrypts a string, you can decrypt it three times and check whether the results of the three times are consistent, preventing an error when decrypting a string.
+6.When you encounter a query similar to '$p3 === file_get_contents($p4) ', you can assign the p3 variable to 'php://input', assign a string to the variable p4, and post a string of the same value as the p4 assignment at the same time on the request, and pass it to p3 using a pseudo-protocol. To get around the comparison.
+7.In SQL, semicolons are used to indicate the end of an sql statement. The end statement is followed by the next statement, which results in stack injection. Production scenario: mysql_multi_query() supports the execution of multiple sql statements at the same time.
+8.When considering what kind of vulnerability exists in a web page, Can be from "SQL Injection","File Upload","XSS","SSTI","Deserialization","PHP Feature","Code Audit","RCE&Pseudo" "Protocol" of these eight common types to answer, XSS generally appear in message boards, registration pages, etc., CSRF vulnerabilities generally appear in places with permission control.
+9.Where there may be injection in the page, you can build SQL statements to try, and see if there is anywhere in the page that is consistent with the parameters you passed in, that is, the echo point, and continue the attack according to the injection point and the echo point found.
 """
-
 
 class ReviewCodeAgent(ConversableAgent):
     """
@@ -28,9 +40,7 @@ class ReviewCodeAgent(ConversableAgent):
     """
 
     DEFAULT_PROMPT = (
-            """You are a senior security expert, you can integrate the knowledge of CTF-Web direction, finding ideas for solving CTF challenges from the code"""
-            +
-            f"""Here are some expertise you might use:\n{expertise}"""
+        """You are a senior security expert, you can integrate the knowledge of CTF-Web direction, finding ideas for solving CTF challenges from the code""" + f"""Here are some expertise you might use:\n{expertise}"""
     )
     DEFAULT_DESCRIPTION = """An agent dedicated to code vulnerability analysis, which can complete the task of analyzing github code or historical message code. don't like tasks that have already been performed."""
 
